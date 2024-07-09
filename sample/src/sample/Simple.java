@@ -22,9 +22,30 @@ public class  Simple
 //		return 128 * 256 * 256 * 256 - 1;
 //		return 128 * 256 * 256 * 256;
 //		return 256 * 256 * 256 * 256;
-//		int  i = 6;  return i+7;
+//		int  i = 0;  return i;
+//		int  j = 0, i = 0;  return i;
+//		int  k = 0, j = 0, i = 0;  return i;
+//		int  l = 0, k = 0, j = 0, i = 0;  return i;
+//		int  m = 0, l = 0, k = 0, j = 0, i = 0;  return i;
+//		int  i = 1;  return i + 2;
+//		int  i = 1;  return i - 2;
+//		int  i = 0;  return ++i;
+//		int  i = 0;  i = i + 2;  return i;
+//		int  i = 0;  i = i - 2;  return i;
+//		int  i = 0;  if (i != 1)  return 0;  return 1;
+//		int  i = 0;  if (i == 1)  return 0;  return 1;
+//		int  i = 0;  if (i >= 1)  return 0;  return 1;
+//		int  i = 0;  if (i > 1)  return 0;  return 1;
+//		for (int i = 0;  i < 2;  ++i) {}  return 0;
+//		return method ();
 //		return Fibunacci.straight(9);
 //		return Fibunacci.recursive(9);
+	}
+
+	@SuppressWarnings("unused")
+	private static int  method ()
+	{
+		return 0;
 	}
 
 }
