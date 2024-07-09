@@ -32,6 +32,7 @@ class  Engine
     private final static byte  iconst_4         = (byte) 0x07;
     private final static byte  iconst_5         = (byte) 0x08;
     private final static byte  bipush           = (byte) 0x10;
+    private final static byte  sipush           = (byte) 0x11;
     private final static byte  iload            = (byte) 0x15;
     private final static byte  iload_0          = (byte) 0x1a;
     private final static byte  iload_1          = (byte) 0x1b;
@@ -97,6 +98,16 @@ class  Engine
                 {
                     ++counter;
                     byte  value = code. peek (counter);
+                    sf. push (value);
+                    break;
+                }
+                case sipush:
+                {
+                    ++counter;
+                    byte  byte1 = code. peek (counter);
+                    ++counter;
+                    byte  byte2 = code. peek (counter);
+                    int  value = (byte1 << 8) | (0xFF & byte2);
                     sf. push (value);
                     break;
                 }

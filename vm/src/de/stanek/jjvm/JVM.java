@@ -28,6 +28,7 @@ class  JVM
         throws JJvmException, IOException
     {
         JJClass  jjClass = loader. load (mainClass);
+
         JJCode  jjCode;
         JJStackFrame  sf;
         {
@@ -38,6 +39,7 @@ class  JVM
                 String  descriptor = mainMethod. substring (parenthesis);
                 jjMethod = jjClass. method (name, descriptor);
             }
+
             JJAttributeCode  ac = jjMethod. attributeCode ();
             jjCode = ac. code();
             sf = heap. createJJStackFrame (ac. max_stack, ac. max_locals);
