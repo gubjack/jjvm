@@ -53,29 +53,6 @@ class  Engine
     private final static byte  ireturn          = (byte) 0xac;
     private final static byte  invokestatic     = (byte) 0xb8;
 
-    int  execute (String mainClass, String mainMethod)
-        throws JJvmException, IOException
-    {
-        JJClass  jjClass = loader. load (mainClass);
-        JJCode  jjCode;
-        JJStackFrame  sf;
-        {
-            JJMethod  jjMethod;
-            {
-                int  parenthesis = mainMethod. indexOf ('(');
-                String  name = mainMethod. substring (0, parenthesis);
-                String  descriptor = mainMethod. substring (parenthesis);
-                jjMethod = jjClass. method (name, descriptor);
-            }
-            JJAttributeCode  ac = jjMethod. attributeCode ();
-            jjCode = ac. code();
-            sf = heap. createJJStackFrame (ac. max_stack, ac. max_locals);
-        }
-
-        execute (jjClass, jjCode, sf);
-
-        return sf. pop ();
-    }
     void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
     {

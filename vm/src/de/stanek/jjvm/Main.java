@@ -3,8 +3,6 @@ package de.stanek.jjvm;
 
 import java.io.IOException;
 
-import de.stanek.jjvm.heap.Heap;
-
 
 public class  Main
 {
@@ -16,12 +14,9 @@ public class  Main
         String  mainClass = "sample/Simple";
         String  mainMethod = "calculate()I";
 
-        Heap  heap = new Heap ();
-        Definer  definer = new Definer (heap);
-        Loader  loader = new Loader (definer, classRoot);
-        Engine  engine = new Engine (heap, loader);
+        JVM  jvm = new JVM (classRoot);
 
-        int  result = engine. execute (mainClass, mainMethod);
+        int  result = jvm. execute (mainClass, mainMethod);
 
         System.out.println (result);
     }
