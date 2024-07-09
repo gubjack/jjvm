@@ -213,7 +213,7 @@ class  Engine
                     int  value1 = sf. pop ();
                     if (value1 < value2)
                     {
-                        int  offset = (branchbyte1 << 8) | branchbyte2;
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
                         int  target = if_counter + offset;
                         counter = --target;
                     }
@@ -230,7 +230,7 @@ class  Engine
                     int  value1 = sf. pop ();
                     if (value1 <= value2)
                     {
-                        int  offset = (branchbyte1 << 8) | branchbyte2;
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
                         int  target = if_counter + offset;
                         counter = --target;
                     }
@@ -243,7 +243,7 @@ class  Engine
                     byte  branchbyte1 = code. peek (counter);
                     ++counter;
                     byte  branchbyte2 = code. peek (counter);
-                    int  offset = (branchbyte1 << 8) | branchbyte2;
+                    int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
                     int  target = goto_counter + offset;
                     counter = --target;
                     break;
@@ -263,7 +263,7 @@ class  Engine
                             byte  indexbyte1 = code. peek (counter);
                             ++counter;
                             byte  indexbyte2 = code. peek (counter);
-                            int  index = (indexbyte1 << 8) | indexbyte2;
+                            int  index = (indexbyte1 << 8) | (0xFF & indexbyte2);
                             mr = cp. methodref (index);
                         }
                         {
@@ -312,7 +312,7 @@ class  Engine
                     int  value1 = sf. pop ();
                     if (value1 == value2)
                     {
-                        int  offset = (branchbyte1 << 8) | branchbyte2;
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
                         int  target = if_counter + offset;
                         counter = --target;
                     }
@@ -329,7 +329,7 @@ class  Engine
                     int  value1 = sf. pop ();
                     if (value1 != value2)
                     {
-                        int  offset = (branchbyte1 << 8) | branchbyte2;
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
                         int  target = if_counter + offset;
                         counter = --target;
                     }
