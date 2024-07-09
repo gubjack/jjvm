@@ -74,16 +74,6 @@ public class  ConstantPool
         return cpInteger. value;
     }
 
-    public CPMethodRef  methodref (int index)
-        throws JJvmException
-    {
-        byte  tag = tags [index];
-        if (tag != ConstantPool.CONSTANT_MethodRef)
-            throw new JJvmException ("MethodRef expected at " + index);
-        CPMethodRef  cpMethodRef = (CPMethodRef) entries [index];
-        return cpMethodRef;
-    }
-
     public String  className (int index)
         throws JJvmException
     {
@@ -93,6 +83,16 @@ public class  ConstantPool
         CPClass  cpClass = (CPClass) entries [index];
         short  class_name_index = cpClass. name_index;
         return utf8 (class_name_index);
+    }
+
+    public CPMethodRef  methodref (int index)
+        throws JJvmException
+    {
+        byte  tag = tags [index];
+        if (tag != ConstantPool.CONSTANT_MethodRef)
+            throw new JJvmException ("MethodRef expected at " + index);
+        CPMethodRef  cpMethodRef = (CPMethodRef) entries [index];
+        return cpMethodRef;
     }
 
     public CPNameAndType  nameandtype (int index)
