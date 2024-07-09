@@ -18,6 +18,10 @@ public class  Heap
         String  stringOnHeap = new String (bytes);
         return new CPUtf8 (length, stringOnHeap);
     }
+    public CPInteger  createCPInteger (int value)
+    {
+        return new CPInteger (value);
+    }
     public CPClass  createCPClass (short name_index)
     {
         return new CPClass (name_index);

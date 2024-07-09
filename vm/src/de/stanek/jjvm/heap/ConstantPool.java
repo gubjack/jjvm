@@ -7,6 +7,7 @@ public class  ConstantPool
 {
 
     public final static byte  CONSTANT_Utf8        = 1;
+    public final static byte  CONSTANT_Integer     = 3;
     public final static byte  CONSTANT_Class       = 7;
     public final static byte  CONSTANT_MethodRef   = 10;
     public final static byte  CONSTANT_NameAndType = 12;
@@ -61,6 +62,16 @@ public class  ConstantPool
         byte  tag = tags [index];
         if (tag != CONSTANT_Utf8)
             throw new JJvmException ("Utf8 expected at " + index);
+    }
+
+    public int  integer (int index)
+        throws JJvmException
+    {
+        byte  tag = tags [index];
+        if (tag != ConstantPool.CONSTANT_Integer)
+            throw new JJvmException ("Integer expected at " + index);
+        CPInteger  cpInteger = (CPInteger) entries [index];
+        return cpInteger. value;
     }
 
     public CPMethodRef  methodref (int index)

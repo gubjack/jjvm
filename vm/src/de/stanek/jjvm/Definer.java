@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import de.stanek.jjvm.heap.ConstantPool;
 import de.stanek.jjvm.heap.CPClass;
+import de.stanek.jjvm.heap.CPInteger;
 import de.stanek.jjvm.heap.CPMethodRef;
 import de.stanek.jjvm.heap.CPNameAndType;
 import de.stanek.jjvm.heap.CPUtf8;
@@ -75,6 +76,13 @@ class  Definer
                     byte[]  bytes = new byte [length];
                     dis. read (bytes);
                     CPUtf8  info = heap. createCPUtf8 (length, bytes);
+                    cp. set (index, tag, info);
+                    break;
+                }
+                case ConstantPool.CONSTANT_Integer:
+                {
+                    int  value = dis. readInt ();
+                    CPInteger  info = heap. createCPInteger (value);
                     cp. set (index, tag, info);
                     break;
                 }

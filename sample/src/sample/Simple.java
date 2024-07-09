@@ -15,8 +15,13 @@ public class  Simple
 //		return 5;
 //		return 6;
 //		return 6*7;
-//		return 128 * 256 - 1;	// 32767
 //		return - 128 * 256;		// -32768
+//		return 128 * 256 - 1;	// 32767
+//		return 128 * 256;		// 32768
+//		return - 128 * 256 - 1;	// -32769
+//		return 128 * 256 * 256 * 256 - 1;
+//		return 128 * 256 * 256 * 256;
+//		return 256 * 256 * 256 * 256;
 //		int  i = 6;  return i+7;
 //		return Fibunacci.straight(9);
 //		return Fibunacci.recursive(9);
