@@ -45,7 +45,7 @@ class  JVM
             sf = heap. createJJStackFrame (ac. max_stack, ac. max_locals);
         }
 
-        engine. execute (jjClass, jjCode, sf);
+        engine. invokestatic (jjClass, jjCode, sf);
 
         return sf. pop ();
     }

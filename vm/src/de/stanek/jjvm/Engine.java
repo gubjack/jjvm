@@ -55,7 +55,7 @@ class  Engine
     private final static byte  ireturn          = (byte) 0xac;
     private final static byte  invokestatic     = (byte) 0xb8;
 
-    void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
+    void  invokestatic (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
     {
         ConstantPool  cp = jjClass. cp;
@@ -304,7 +304,7 @@ class  Engine
                     for (int  i = m.params - 1;  i >= 0;  --i)
                         sf2. set (i, sf. pop ());
 
-                    execute (c, code2, sf2);
+                    invokestatic (c, code2, sf2);
 
                     if (m.results == 1)
                         sf. push (sf2. pop ());
