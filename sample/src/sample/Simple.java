@@ -35,6 +35,13 @@ public class  Simple
 //		int  i = 0;  i = i - 2;  return i;
 //		int  i = 3;  return i * 2;
 //		int  i = 3;  return -i;
+//		int  i = 3;  return i << 2;
+//		int  i = 12;  return i >> 2;
+//		int  i = 0x80000000;  return i >> 31;
+//		int  i = 0x80000000;  return i >>> 31;
+//		int  i = 0xf0;  return i & 0x0f;
+//		int  i = 0xf0;  return i | 0x0f;
+//		int  i = 0x1e;  return i ^ 0x0f;
 //		int  i = 0;  if (i != 1)  return 0;  return 1;
 //		int  i = 0;  if (i == 1)  return 0;  return 1;
 //		int  i = 0;  if (i >= 1)  return 0;  return 1;

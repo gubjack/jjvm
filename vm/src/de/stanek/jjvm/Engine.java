@@ -49,6 +49,12 @@ class  Engine
     private final static byte  isub             = (byte) 0x64;
     private final static byte  imul             = (byte) 0x68;
     private final static byte  ineg             = (byte) 0x74;
+    private final static byte  ishl             = (byte) 0x78;
+    private final static byte  ishr             = (byte) 0x7a;
+    private final static byte  iushr            = (byte) 0x7c;
+    private final static byte  iand             = (byte) 0x7e;
+    private final static byte  ior              = (byte) 0x80;
+    private final static byte  ixor             = (byte) 0x82;
     private final static byte  iinc             = (byte) 0x84;
     private final static byte  if_icmpeq        = (byte) 0x9f;
     private final static byte  if_icmpne        = (byte) 0xa0;
@@ -220,6 +226,54 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     int  result = -value;
+                    sf. push (result);
+                    break;
+                }
+                case ishl:
+                {
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    int  result = value1 << value2;
+                    sf. push (result);
+                    break;
+                }
+                case ishr:
+                {
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    int  result = value1 >> value2;
+                    sf. push (result);
+                    break;
+                }
+                case iushr:
+                {
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    int  result = value1 >>> value2;
+                    sf. push (result);
+                    break;
+                }
+                case iand:
+                {
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    int  result = value1 & value2;
+                    sf. push (result);
+                    break;
+                }
+                case ior:
+                {
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    int  result = value1 | value2;
+                    sf. push (result);
+                    break;
+                }
+                case ixor:
+                {
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    int  result = value1 ^ value2;
                     sf. push (result);
                     break;
                 }
