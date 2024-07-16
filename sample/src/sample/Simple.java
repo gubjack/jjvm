@@ -42,6 +42,12 @@ public class  Simple
 //		int  i = 0xf0;  return i & 0x0f;
 //		int  i = 0xf0;  return i | 0x0f;
 //		int  i = 0x1e;  return i ^ 0x0f;
+//		int  i = 0;  if (i != 0)  return 0;  return 1;
+//		int  i = 0;  if (i == 0)  return 0;  return 1;
+//		int  i = 0;  if (i >= 0)  return 0;  return 1;
+//		int  i = 0;  if (i < 0)  return 0;  return 1;
+//		int  i = 0;  if (i <= 0)  return 0;  return 1;
+//		int  i = 0;  if (i > 0)  return 0;  return 1;
 //		int  i = 0;  if (i != 1)  return 0;  return 1;
 //		int  i = 0;  if (i == 1)  return 0;  return 1;
 //		int  i = 0;  if (i >= 1)  return 0;  return 1;

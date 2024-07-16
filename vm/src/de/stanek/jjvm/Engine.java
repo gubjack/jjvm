@@ -56,6 +56,12 @@ class  Engine
     private final static byte  ior              = (byte) 0x80;
     private final static byte  ixor             = (byte) 0x82;
     private final static byte  iinc             = (byte) 0x84;
+    private final static byte  ifeq             = (byte) 0x99;
+    private final static byte  ifne             = (byte) 0x9a;
+    private final static byte  iflt             = (byte) 0x9b;
+    private final static byte  ifge             = (byte) 0x9c;
+    private final static byte  ifgt             = (byte) 0x9d;
+    private final static byte  ifle             = (byte) 0x9e;
     private final static byte  if_icmpeq        = (byte) 0x9f;
     private final static byte  if_icmpne        = (byte) 0xa0;
     private final static byte  if_icmplt        = (byte) 0xa1;
@@ -286,6 +292,102 @@ class  Engine
                     int  value = sf. get (index);
                     value += const_;
                     sf. set (index, value);
+                    break;
+                }
+                case ifeq:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value = sf. pop ();
+                    if (value == 0)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
+                    break;
+                }
+                case ifne:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value = sf. pop ();
+                    if (value != 0)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
+                    break;
+                }
+                case iflt:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value = sf. pop ();
+                    if (value < 0)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
+                    break;
+                }
+                case ifge:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value = sf. pop ();
+                    if (value >= 0)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
+                    break;
+                }
+                case ifgt:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value = sf. pop ();
+                    if (value > 0)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
+                    break;
+                }
+                case ifle:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value = sf. pop ();
+                    if (value <= 0)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
                     break;
                 }
                 case if_icmplt:
