@@ -13,6 +13,7 @@ public class  Simple
 //		return 3;
 //		return 4;
 //		return 5;
+//		return -1;
 //		return 6;
 //		return 6*7;
 //		return - 128 * 256;		// -32768

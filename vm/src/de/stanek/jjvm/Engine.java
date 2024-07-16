@@ -25,6 +25,7 @@ class  Engine
     private final Heap  heap;
     private final Loader  loader;
 
+    private final static byte  iconst_m1        = (byte) 0x02;
     private final static byte  iconst_0         = (byte) 0x03;
     private final static byte  iconst_1         = (byte) 0x04;
     private final static byte  iconst_2         = (byte) 0x05;
@@ -65,6 +66,11 @@ class  Engine
             byte  cmd = code. peek (counter);
             switch (cmd)
             {
+                case iconst_m1:
+                {
+                    sf. push (-1);
+                    break;
+                }
                 case iconst_0:
                 {
                     sf. push (0);
