@@ -48,6 +48,7 @@ class  Engine
     private final static byte  iadd             = (byte) 0x60;
     private final static byte  isub             = (byte) 0x64;
     private final static byte  imul             = (byte) 0x68;
+    private final static byte  ineg             = (byte) 0x74;
     private final static byte  iinc             = (byte) 0x84;
     private final static byte  if_icmpeq        = (byte) 0x9f;
     private final static byte  if_icmpne        = (byte) 0xa0;
@@ -212,6 +213,13 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     int  result = value1 * value2;
+                    sf. push (result);
+                    break;
+                }
+                case ineg:
+                {
+                    int  value = sf. pop ();
+                    int  result = -value;
                     sf. push (result);
                     break;
                 }
