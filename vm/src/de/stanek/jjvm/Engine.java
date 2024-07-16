@@ -47,6 +47,7 @@ class  Engine
     private final static byte  istore_3         = (byte) 0x3e;
     private final static byte  iadd             = (byte) 0x60;
     private final static byte  isub             = (byte) 0x64;
+    private final static byte  imul             = (byte) 0x68;
     private final static byte  iinc             = (byte) 0x84;
     private final static byte  if_icmpeq        = (byte) 0x9f;
     private final static byte  if_icmpne        = (byte) 0xa0;
@@ -203,6 +204,14 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     int  result = value1 - value2;
+                    sf. push (result);
+                    break;
+                }
+                case imul:
+                {
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    int  result = value1 * value2;
                     sf. push (result);
                     break;
                 }
