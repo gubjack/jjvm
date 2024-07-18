@@ -65,6 +65,8 @@ class  Engine
     private final static byte  if_icmpeq        = (byte) 0x9f;
     private final static byte  if_icmpne        = (byte) 0xa0;
     private final static byte  if_icmplt        = (byte) 0xa1;
+    private final static byte  if_icmpge        = (byte) 0xa2;
+    private final static byte  if_icmpgt        = (byte) 0xa3;
     private final static byte  if_icmple        = (byte) 0xa4;
     private final static byte  goto_            = (byte) 0xa7;
     private final static byte  ireturn          = (byte) 0xac;
@@ -434,6 +436,40 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     if (value1 < value2)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
+                    break;
+                }
+                case if_icmpge:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    if (value1 >= value2)
+                    {
+                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+                        int  target = if_counter + offset;
+                        counter = --target;
+                    }
+                    break;
+                }
+                case if_icmpgt:
+                {
+                    int  if_counter = counter;
+                    ++counter;
+                    byte  branchbyte1 = code. peek (counter);
+                    ++counter;
+                    byte  branchbyte2 = code. peek (counter);
+                    int  value2 = sf. pop ();
+                    int  value1 = sf. pop ();
+                    if (value1 > value2)
                     {
                         int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
                         int  target = if_counter + offset;

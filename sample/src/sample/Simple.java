@@ -51,6 +51,8 @@ public class  Simple
 //		int  i = 0;  if (i != 1)  return 0;  return 1;
 //		int  i = 0;  if (i == 1)  return 0;  return 1;
 //		int  i = 0;  if (i >= 1)  return 0;  return 1;
+//		int  i = 0;  if (i < 1)  return 0;  return 1;
+//		int  i = 0;  if (i <= 1)  return 0;  return 1;
 //		int  i = 0;  if (i > 1)  return 0;  return 1;
 //		for (int i = 0;  i < 2;  ++i) {}  return 0;
 //		return method ();
