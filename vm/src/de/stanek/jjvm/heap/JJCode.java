@@ -14,5 +14,16 @@ public class  JJCode
     {
         return code [count];
     }
+    public int  branch (int counter)
+    {
+        int  start_counter = counter;
+        ++counter;
+        byte  branchbyte1 = code [counter];
+        ++counter;
+        byte  branchbyte2 = code [counter];
+        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
+        int  target = start_counter + offset;
+        return --target;
+    }
 
 }

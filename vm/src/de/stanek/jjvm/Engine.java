@@ -300,16 +300,7 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     if (value == 0)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -318,16 +309,7 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     if (value != 0)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -336,16 +318,7 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     if (value < 0)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -354,16 +327,7 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     if (value >= 0)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -372,16 +336,7 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     if (value > 0)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -390,16 +345,7 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     if (value <= 0)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -409,16 +355,7 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     if (value1 == value2)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -428,16 +365,7 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     if (value1 != value2)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -447,16 +375,7 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     if (value1 < value2)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -466,16 +385,7 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     if (value1 >= value2)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -485,16 +395,7 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     if (value1 > value2)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
@@ -504,30 +405,14 @@ class  Engine
                     int  value2 = sf. pop ();
                     int  value1 = sf. pop ();
                     if (value1 <= value2)
-                    {
-                        int  if_counter = counter;
-                        ++counter;
-                        byte  branchbyte1 = code. peek (counter);
-                        ++counter;
-                        byte  branchbyte2 = code. peek (counter);
-                        int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                        int  target = if_counter + offset;
-                        counter = --target;
-                    }
+                        counter = code. branch (counter);
                     else
                         counter += 2;
                     break;
                 }
                 case goto_:
                 {
-                    int  goto_counter = counter;
-                    ++counter;
-                    byte  branchbyte1 = code. peek (counter);
-                    ++counter;
-                    byte  branchbyte2 = code. peek (counter);
-                    int  offset = (branchbyte1 << 8) | (0xFF & branchbyte2);
-                    int  target = goto_counter + offset;
-                    counter = --target;
+                    counter = code. branch (counter);
                     break;
                 }
                 case ireturn:
