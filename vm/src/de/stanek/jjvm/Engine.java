@@ -126,11 +126,8 @@ class  Engine
                 }
                 case sipush:
                 {
-                    ++counter;
-                    byte  byte1 = code. peek (counter);
-                    ++counter;
-                    byte  byte2 = code. peek (counter);
-                    int  value = (byte1 << 8) | (0xFF & byte2);
+                    short  value = code. nextShort (counter);
+                    counter += 2;
                     sf. push (value);
                     break;
                 }
@@ -426,11 +423,8 @@ class  Engine
                     {
                         CPMethodRef  mr;
                         {
-                            ++counter;
-                            byte  indexbyte1 = code. peek (counter);
-                            ++counter;
-                            byte  indexbyte2 = code. peek (counter);
-                            int  index = (indexbyte1 << 8) | (0xFF & indexbyte2);
+                            short  index = code. nextShort (counter);
+                            counter += 2;
                             mr = cp. methodref (index);
                         }
                         {
