@@ -72,7 +72,28 @@ class  Engine
     private final static byte  ireturn          = (byte) 0xac;
     private final static byte  invokestatic     = (byte) 0xb8;
 
-    void  invokestatic (JJClass jjClass, JJCode code, JJStackFrame sf)
+    void  invokestatic (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
+        throws JJvmException, IOException
+    {
+        JJCode  code;
+        JJStackFrame  sf;
+        {
+            JJAttributeCode  ac = m. attributeCode ();
+            code = ac. code();
+            sf = heap. createJJStackFrame (ac.max_stack, ac.max_locals);
+        }
+
+        // Feed locals
+        for (int  i = m.params - 1;  i >= 0;  --i)
+            sf. set (i, sfLast. pop ());
+
+        invokestatic (jjClass, code, sf);
+
+        // Retrieve result
+        if (m.results == 1)
+            sfLast. push (sf. pop ());
+    }
+    private void  invokestatic (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
     {
         ConstantPool  cp = jjClass. cp;
@@ -444,22 +465,7 @@ class  Engine
                         }
                     }
 
-                    JJCode  code2;
-                    JJStackFrame  sf2;
-                    {
-                        JJAttributeCode  ac = m. attributeCode ();
-                        code2 = ac. code();
-                        sf2 = heap. createJJStackFrame (
-                                                ac.max_stack, ac.max_locals);
-                    }
-
-                    for (int  i = m.params - 1;  i >= 0;  --i)
-                        sf2. set (i, sf. pop ());
-
-                    invokestatic (c, code2, sf2);
-
-                    if (m.results == 1)
-                        sf. push (sf2. pop ());
+                    invokestatic (c, m, sf);
                     break;
                 }
                 default:

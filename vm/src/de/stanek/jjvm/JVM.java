@@ -4,9 +4,7 @@ package de.stanek.jjvm;
 import java.io.IOException;
 
 import de.stanek.jjvm.heap.Heap;
-import de.stanek.jjvm.heap.JJAttributeCode;
 import de.stanek.jjvm.heap.JJClass;
-import de.stanek.jjvm.heap.JJCode;
 import de.stanek.jjvm.heap.JJMethod;
 import de.stanek.jjvm.heap.JJStackFrame;
 
@@ -27,25 +25,19 @@ class  JVM
     int  execute (String mainClass, String mainMethod)
         throws JJvmException, IOException
     {
-        JJClass  jjClass = loader. load (mainClass);
+        JJClass  c = loader. load (mainClass);
 
-        JJCode  jjCode;
-        JJStackFrame  sf;
+        JJMethod  m;
         {
-            JJMethod  jjMethod;
-            {
-                int  parenthesis = mainMethod. indexOf ('(');
-                String  name = mainMethod. substring (0, parenthesis);
-                String  descriptor = mainMethod. substring (parenthesis);
-                jjMethod = jjClass. method (name, descriptor);
-            }
-
-            JJAttributeCode  ac = jjMethod. attributeCode ();
-            jjCode = ac. code();
-            sf = heap. createJJStackFrame (ac. max_stack, ac. max_locals);
+            int  parenthesis = mainMethod. indexOf ('(');
+            String  name = mainMethod. substring (0, parenthesis);
+            String  descriptor = mainMethod. substring (parenthesis);
+            m = c. method (name, descriptor);
         }
 
-        engine. invokestatic (jjClass, jjCode, sf);
+        JJStackFrame  sf = heap. createJJStackFrame ((short) 1, (short) 0);
+
+        engine. invokestatic (c, m, sf);
 
         return sf. pop ();
     }
