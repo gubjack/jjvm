@@ -144,9 +144,7 @@ class  Definer
                     break;
                 ++params;
             }
-            int  results = 0;
-            if (descriptor. charAt (descriptor. length () - 1) == 'I')
-                results = 1;
+            int  results = results (descriptor);
 
             JJAttributes  jjAttributes = readAttributes (dis, cp);
             methods. set (index, 
@@ -154,6 +152,9 @@ class  Definer
                                             , jjAttributes, params, results));
         }
         return methods;
+    }
+    public static int  results (String descriptor) {
+        return  descriptor. charAt (descriptor. length () - 1) == 'I'  ?  1  :  0;
     }
     private JJAttributes  readAttributes (DataInputStream dis, ConstantPool cp)
         throws IOException, JJvmException

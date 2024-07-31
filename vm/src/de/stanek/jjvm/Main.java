@@ -11,12 +11,13 @@ public class  Main
         throws IOException, JJvmException
     {
         String  classRoot = "../sample/bin";
-        String  mainClass = "sample/Simple";
-        String  mainMethod = "calculate()I";
+        String  clazz = "sample/Simple";
+        String  name = "calculate";
+        String  descriptor = "()I";
 
         JVM  jvm = new JVM (classRoot);
 
-        int  result = jvm. execute (mainClass, mainMethod);
+        int  result = jvm. execute (clazz, name, descriptor);
 
         System.out.println (result);
     }
