@@ -11,4 +11,9 @@ public class  JJvmException
         super (message);
     }
 
+    public  JJvmException (Throwable t)
+    {
+        super (t);
+    }
+
 }

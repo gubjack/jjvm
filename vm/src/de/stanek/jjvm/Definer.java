@@ -37,12 +37,11 @@ class  Definer
         @SuppressWarnings("unused")
         short  major_version = dis. readShort ();
 
-        ConstantPool  constantPool = readConstantPool (dis);
+        ConstantPool  cp = readConstantPool (dis);
 //        System.out.println (constantPool);
 
         @SuppressWarnings("unused")
         short  access_flags = dis. readShort ();
-        @SuppressWarnings("unused")
         short  this_class = dis. readShort ();
         @SuppressWarnings("unused")
         short  super_class = dis. readShort ();
@@ -54,9 +53,9 @@ class  Definer
         if (fields_count > 0)
             throw new JJvmException ("Fields present");
 
-        JJMethods  methods = readMethods (dis, constantPool);
+        JJMethods  methods = readMethods (dis, cp);
 
-        return heap. createJJClass (constantPool, methods);
+        return heap. createJJClass (cp, this_class, methods);
     }
 
     private ConstantPool  readConstantPool (DataInputStream dis)
@@ -127,8 +126,7 @@ class  Definer
 
         for (short  index = 0;  index < methods_count;  ++index)
         {
-            @SuppressWarnings("unused")
-            short  access_flags2 = dis. readShort ();
+            short  access_flags = dis. readShort ();
 
             short  name_index = dis. readShort ();
             String  name = cp. utf8 (name_index);
@@ -148,8 +146,9 @@ class  Definer
 
             JJAttributes  jjAttributes = readAttributes (dis, cp);
             methods. set (index, 
-                            heap. createJJMethod (name, descriptor
-                                            , jjAttributes, params, results));
+                            heap. createJJMethod (
+                                    access_flags, name, descriptor
+                                    , jjAttributes, params, results));
         }
         return methods;
     }

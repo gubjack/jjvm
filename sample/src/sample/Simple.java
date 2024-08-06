@@ -56,9 +56,13 @@ public class  Simple
 //		int  i = 0;  if (i > 1)  return 0;  return 1;
 //		for (int i = 0;  i < 2;  ++i) {}  return 0;
 //		return method ();
+//		println(99);  return 0;
 //		return Fibunacci.straight(9);
 //		return Fibunacci.recursive(9);
 	}
+
+	@SuppressWarnings("unused")
+	private native static void  println (int value);
 
 	@SuppressWarnings("unused")
 	private static int  method ()

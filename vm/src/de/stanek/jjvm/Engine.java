@@ -2,6 +2,8 @@
 package de.stanek.jjvm;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import de.stanek.jjvm.heap.JJCode;
 import de.stanek.jjvm.heap.CPMethodRef;
@@ -457,7 +459,7 @@ class  Engine
                             String  descriptor;
                             {
                                 CPNameAndType  nt = cp. nameandtype (
-                                                        mr.name_and_type_index);
+                                                    mr.name_and_type_index);
                                 name = cp. utf8 (nt.name_index);
                                 descriptor = cp. utf8 (nt.descriptor_index);
                             }
@@ -465,7 +467,10 @@ class  Engine
                         }
                     }
 
-                    invokestatic (c, m, sf);
+                    if (m. isNative ())
+                        invokestatic_native (c, m, sf);
+                    else
+                        invokestatic (c, m, sf);
                     break;
                 }
                 default:
@@ -474,6 +479,60 @@ class  Engine
                                         + " at " + counter);
             }
         }
+    }
+
+    private void  invokestatic_native (JJClass c, JJMethod m
+                                        , JJStackFrame sfLast)
+        throws JJvmException
+    {
+        Object  result;
+        {
+            Method  method;
+            {
+                Class<?> clazz;
+                {
+                    String  name = "de.stanek.jjvm.natives."
+                                    + c. name. replace ('/', '.');
+                    try
+                    {
+                        clazz = Class. forName (name);
+                    }
+                    catch (ClassNotFoundException e){
+                        throw new JJvmException (e);
+                    }
+                }
+
+                Class<?>[]  types = new Class<?> [m. params];
+                for (int  i = m. params - 1;  i >= 0;  --i)
+                    types [i] = int.class;
+
+                try
+                {
+                    method = clazz. getMethod (m. name, types);
+                }
+                catch (NoSuchMethodException | SecurityException e)
+                {
+                    throw new JJvmException (e);
+                }
+            }
+
+            // Feed params
+            Object[]  values = new Integer [m. params];
+            for (int  i = m. params - 1;  i >= 0;  --i)
+                values [i] = sfLast. pop ();
+
+            try {
+                result = method. invoke (null, values);
+            }
+            catch (IllegalAccessException | InvocationTargetException e)
+            {
+                throw new JJvmException (e);
+            }
+        }
+
+        // Retrieve result
+        if (m.results == 1)
+            sfLast. push ((Integer) result);
     }
 
 }

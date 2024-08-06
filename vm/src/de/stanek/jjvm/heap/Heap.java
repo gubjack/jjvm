@@ -57,18 +57,21 @@ public class  Heap
     {
         return new JJMethods (methods_count);
     }
-    public JJMethod  createJJMethod (String name, String descriptor
+    public JJMethod  createJJMethod (short access_flags
+                                    , String name, String descriptor
                                     , JJAttributes attributes
                                     , int params, int results)
     {
-        return new JJMethod (name, descriptor, attributes, params, results);
+        return new JJMethod (access_flags, name, descriptor, attributes
+                            , params, results);
     }
 
     // class
-    public JJClass  createJJClass (ConstantPool cp, JJMethods methods)
+    public JJClass  createJJClass (ConstantPool cp, short this_class
+                                    , JJMethods methods)
         throws JJvmException
     {
-        return new JJClass (cp, methods);
+        return new JJClass (cp, this_class, methods);
     }
 
 
