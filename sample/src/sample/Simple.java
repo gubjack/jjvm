@@ -8,6 +8,8 @@ import jjvm.lang.Console;
 public class  Simple
 {
 
+	private static int  field;
+
 	public static int  calculate ()
 	{
 		return 0;

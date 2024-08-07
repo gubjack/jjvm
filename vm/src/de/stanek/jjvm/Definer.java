@@ -14,6 +14,7 @@ import de.stanek.jjvm.heap.Heap;
 import de.stanek.jjvm.heap.JJAttribute;
 import de.stanek.jjvm.heap.JJAttributes;
 import de.stanek.jjvm.heap.JJClass;
+import de.stanek.jjvm.heap.JJFields;
 import de.stanek.jjvm.heap.JJMethods;
 
 
@@ -38,7 +39,7 @@ class  Definer
         short  major_version = dis. readShort ();
 
         ConstantPool  cp = readConstantPool (dis);
-//        System.out.println (constantPool);
+//        System.out.println (cp);
 
         @SuppressWarnings("unused")
         short  access_flags = dis. readShort ();
@@ -49,13 +50,11 @@ class  Definer
         short  interfaces_count = dis. readShort ();
         if (interfaces_count > 0)
             throw new JJvmException ("Interfaces implemented");
-        short  fields_count = dis. readShort ();
-        if (fields_count > 0)
-            throw new JJvmException ("Fields present");
-
+        JJFields  fields = readFields (dis, cp);
         JJMethods  methods = readMethods (dis, cp);
+        // Attributes unread
 
-        return heap. createJJClass (cp, this_class, methods);
+        return heap. createJJClass (cp, this_class, methods, fields);
     }
 
     private ConstantPool  readConstantPool (DataInputStream dis)
@@ -116,6 +115,31 @@ class  Definer
             }
         }
         return cp;
+    }
+
+    private JJFields  readFields (DataInputStream dis, ConstantPool cp)
+        throws IOException, JJvmException
+    {
+        short  fields_count = dis. readShort ();
+        JJFields  fields = heap. createJJFields (fields_count);
+
+        for (short  index = 0;  index < fields_count;  ++index)
+        {
+            short  access_flags = dis. readShort ();
+
+            short  name_index = dis. readShort ();
+            String  name = cp. utf8 (name_index);
+
+            short  descriptor_index = dis. readShort ();
+            String  descriptor = cp. utf8 (descriptor_index);
+
+            JJAttributes  jjAttributes = readAttributes (dis, cp);
+            fields. set (index, 
+                            heap. createJJField (
+                                    access_flags, name, descriptor
+                                    , jjAttributes));
+        }
+        return fields;
     }
 
     private JJMethods  readMethods (DataInputStream dis, ConstantPool cp)

@@ -52,6 +52,18 @@ public class  Heap
         return new JJAttributeCode (name, max_stack, max_locals, jjCode);
     }
 
+    // fields
+    public JJFields  createJJFields (short fields_count)
+    {
+        return new JJFields (fields_count);
+    }
+    public JJField  createJJField (short access_flags
+                                    , String name, String descriptor
+                                    , JJAttributes attributes)
+    {
+        return new JJField (access_flags, name, descriptor, attributes);
+    }
+
     // methods
     public JJMethods  createJJMethods (short methods_count)
     {
@@ -68,10 +80,10 @@ public class  Heap
 
     // class
     public JJClass  createJJClass (ConstantPool cp, short this_class
-                                    , JJMethods methods)
+                                    , JJMethods methods, JJFields fields)
         throws JJvmException
     {
-        return new JJClass (cp, this_class, methods);
+        return new JJClass (cp, this_class, methods, fields);
     }
 
 
