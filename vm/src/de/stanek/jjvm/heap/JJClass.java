@@ -19,6 +19,7 @@ public class  JJClass
     public final String  name;
     private final JJMethods  jjMethods;
     private final JJFields  fields;
+    public boolean  initialized, initializing;
 
     public JJField  field (String name, String descriptor)
         throws JJvmException

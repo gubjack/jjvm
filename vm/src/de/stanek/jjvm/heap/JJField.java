@@ -12,11 +12,13 @@ public class  JJField
         this.name = name;
         this.descriptor = descriptor;
         this.jjAttributes = jjAttributes;
+        this.value = 0;
     }
     final short  access_flags;
     public final String  name;
     final String  descriptor;
     @SuppressWarnings("unused")
     private final JJAttributes jjAttributes;
+    public int  value;
 
 }

@@ -9,6 +9,7 @@ public class  ConstantPool
     public final static byte  CONSTANT_Utf8        = 1;
     public final static byte  CONSTANT_Integer     = 3;
     public final static byte  CONSTANT_Class       = 7;
+    public final static byte  CONSTANT_FieldRef    = 9;
     public final static byte  CONSTANT_MethodRef   = 10;
     public final static byte  CONSTANT_NameAndType = 12;
 
@@ -83,6 +84,16 @@ public class  ConstantPool
         CPClass  cpClass = (CPClass) entries [index];
         short  class_name_index = cpClass. name_index;
         return utf8 (class_name_index);
+    }
+
+    public CPFieldRef  fieldref (int index)
+        throws JJvmException
+    {
+        byte  tag = tags [index];
+        if (tag != ConstantPool.CONSTANT_FieldRef)
+            throw new JJvmException ("FieldRef expected at " + index);
+        CPFieldRef  cpFieldRef = (CPFieldRef) entries [index];
+        return cpFieldRef;
     }
 
     public CPMethodRef  methodref (int index)

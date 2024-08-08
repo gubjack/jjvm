@@ -42,7 +42,7 @@ public class  JJMethods
                 &&  method. descriptor. equals (descriptor))
                 return method;
         }
-        throw new JJvmException ("Missing method " + name + descriptor);
+        return null;
     }
 
 }

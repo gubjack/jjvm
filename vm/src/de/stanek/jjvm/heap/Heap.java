@@ -26,6 +26,11 @@ public class  Heap
     {
         return new CPClass (name_index);
     }
+    public CPFieldRef  createCPFieldRef (short class_index
+                                        , short name_and_type_index)
+    {
+        return new CPFieldRef (class_index, name_and_type_index);
+    }
     public CPMethodRef  createCPMethodRef (short class_index
                                             , short name_and_type_index)
     {
@@ -90,7 +95,7 @@ public class  Heap
     // +++ runtime data +++
 
     // stack frame
-    public JJStackFrame  createJJStackFrame (short max_stack, short max_locals)
+    public JJStackFrame  createJJStackFrame (int max_stack, int max_locals)
     {
         int[]  locals = new int[max_locals];
         int[]  stack = new int[max_stack];

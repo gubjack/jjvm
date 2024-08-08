@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import de.stanek.jjvm.heap.ConstantPool;
 import de.stanek.jjvm.heap.CPClass;
+import de.stanek.jjvm.heap.CPFieldRef;
 import de.stanek.jjvm.heap.CPInteger;
 import de.stanek.jjvm.heap.CPMethodRef;
 import de.stanek.jjvm.heap.CPNameAndType;
@@ -88,6 +89,15 @@ class  Definer
                 {
                     short  name_index = dis. readShort ();
                     CPClass  info = heap. createCPClass (name_index);
+                    cp. set (index, tag, info);
+                    break;
+                }
+                case ConstantPool.CONSTANT_FieldRef:
+                {
+                    short  class_index = dis. readShort ();
+                    short  name_and_type_index = dis. readShort ();
+                    CPFieldRef  info = heap. createCPFieldRef (
+                                            class_index, name_and_type_index);
                     cp. set (index, tag, info);
                     break;
                 }

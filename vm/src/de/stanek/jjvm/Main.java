@@ -12,12 +12,10 @@ public class  Main
     {
         String  classRoot = "../sample/bin";
         String  clazz = "sample/Simple";
-        String  name = "calculate";
-        String  descriptor = "()I";
 
         JVM  jvm = new JVM (classRoot);
 
-        int  result = jvm. execute (clazz, name, descriptor);
+        int  result = jvm. executeMain (clazz);
 
         System.out.println (result);
     }

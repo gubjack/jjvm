@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import de.stanek.jjvm.heap.JJCode;
+import de.stanek.jjvm.heap.JJField;
+import de.stanek.jjvm.heap.CPFieldRef;
 import de.stanek.jjvm.heap.CPMethodRef;
 import de.stanek.jjvm.heap.CPNameAndType;
 import de.stanek.jjvm.heap.ConstantPool;
@@ -72,7 +74,44 @@ class  Engine
     private final static byte  if_icmple        = (byte) 0xa4;
     private final static byte  goto_            = (byte) 0xa7;
     private final static byte  ireturn          = (byte) 0xac;
+    private final static byte  return_          = (byte) 0xb1;
+    private final static byte  getstatic        = (byte) 0xb2;
+    private final static byte  putstatic        = (byte) 0xb3;
     private final static byte  invokestatic     = (byte) 0xb8;
+
+    void  initialize (JJClass c)
+        throws JJvmException, IOException
+    {
+        if (c.initialized)  // avoid unnecessary locking
+            return;
+        synchronized (c)
+        {
+            if (c.initializing) // same thread might see this
+                return;
+            if (c.initialized)  // different thread might see this
+                return;
+
+            c.initializing = true;
+            try
+            {
+                JJMethod  m = c. method ("<clinit>", "()V");
+                if (m != null)
+                {
+                    JJStackFrame  sf = heap. createJJStackFrame (0, 0);
+                    invokestatic (c, m, sf);
+// TODO  Initialize base class first
+// TODO  Clarify circularity situations
+// TODO  Handle initialization failure
+                }
+            }
+            finally
+            {
+                c.initializing = false;
+            }
+
+            c.initialized = true;
+        }
+    }
 
     void  invokestatic (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
@@ -439,6 +478,72 @@ class  Engine
                 {
                     return;
                 }
+                case return_:
+                {
+                    return;
+                }
+                case getstatic:
+                {
+                    JJClass  c;
+                    JJField  f;
+                    {
+                        CPFieldRef  fr;
+                        {
+                            short  index = code. nextShort (counter);
+                            counter += 2;
+                            fr = cp. fieldref (index);
+                        }
+                        {
+                            String  class_name = cp. className (fr.class_index);
+                            c = loader. load (class_name);
+                            initialize (c);
+                        }
+                        {
+                            String  name;
+                            String  descriptor;
+                            {
+                                CPNameAndType  nt = cp. nameandtype (
+                                                    fr.name_and_type_index);
+                                name = cp. utf8 (nt.name_index);
+                                descriptor = cp. utf8 (nt.descriptor_index);
+                            }
+                            f = c. field (name, descriptor);
+                        }
+                    }
+                    sf. push (f.value);
+                    break;
+                }
+                case putstatic:
+                {
+                    JJClass  c;
+                    JJField  f;
+                    {
+                        CPFieldRef  fr;
+                        {
+                            short  index = code. nextShort (counter);
+                            counter += 2;
+                            fr = cp. fieldref (index);
+                        }
+                        {
+                            String  class_name = cp. className (fr.class_index);
+                            c = loader. load (class_name);
+                            initialize (c);
+                        }
+                        {
+                            String  name;
+                            String  descriptor;
+                            {
+                                CPNameAndType  nt = cp. nameandtype (
+                                                    fr.name_and_type_index);
+                                name = cp. utf8 (nt.name_index);
+                                descriptor = cp. utf8 (nt.descriptor_index);
+                            }
+                            f = c. field (name, descriptor);
+                        }
+                    }
+                    f. value = sf. pop ();
+                    break;
+                }
                 case invokestatic:
                 {
                     JJClass  c;
@@ -453,6 +558,7 @@ class  Engine
                         {
                             String  class_name = cp. className (mr.class_index);
                             c = loader. load (class_name);
+                            initialize (c);
                         }
                         {
                             String  name;
@@ -464,6 +570,9 @@ class  Engine
                                 descriptor = cp. utf8 (nt.descriptor_index);
                             }
                             m = c. method (name, descriptor);
+                            if (m == null)
+                                throw new JJvmException ("Missing method "
+                                                        + name + descriptor);
                         }
                     }
 

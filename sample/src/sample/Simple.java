@@ -8,8 +8,6 @@ import jjvm.lang.Console;
 public class  Simple
 {
 
-	private static int  field;
-
 	public static int  calculate ()
 	{
 		return 0;
@@ -65,13 +63,16 @@ public class  Simple
 //		Console.println(88);  return 0;
 //		return Fibunacci.straight(9);
 //		return Fibunacci.recursive(9);
+//		return field;
 	}
 
-	private native static void  println (int value);
+//	private static int  method ()
+//	{
+//		return 0;
+//	}
+//
+//	private native static void  println (int value);
 
-	private static int  method ()
-	{
-		return 0;
-	}
+//	private static int  field = 42;
 
 }
