@@ -3,6 +3,7 @@ package de.stanek.jjvm.heap;
 
 import de.stanek.jjvm.JJvmException;
 
+
 public class  JJMethod
 {
 
