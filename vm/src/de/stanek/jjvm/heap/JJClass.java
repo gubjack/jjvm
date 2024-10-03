@@ -24,11 +24,20 @@ public class  JJClass
     private final JJMethods  jjMethods;
     private final JJFields  fields;
     public boolean  initialized, initializing;
+    public JJClass  super_c;
 
     public JJField  field (String name, String descriptor)
         throws JJvmException
     {
-        return fields. field (name, descriptor);
+        JJField  f= fields. field (name, descriptor);
+        if (f == null)
+        {
+            if (super_c != null)
+                f = super_c. field (name, descriptor);
+            if (f == null)
+                throw new JJvmException ("Missing field " + name + descriptor);
+        }
+        return f;
     }
 
     public JJMethod  method (String name, String descriptor)

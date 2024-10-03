@@ -42,7 +42,7 @@ public class  JJFields
                 &&  field. descriptor. equals (descriptor))
                 return field;
         }
-        throw new JJvmException ("Missing field " + name + descriptor);
+        return null;
     }
 
 }

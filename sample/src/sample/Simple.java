@@ -6,6 +6,7 @@ import jjvm.lang.Console;
 
 @SuppressWarnings("unused")
 public class  Simple
+    extends Super
 {
 
     public static int  calculate ()
@@ -114,8 +115,12 @@ public class  Simple
 //        Console.println(88);  return 0;
         // "<clinit>", putstatic, return, ..., getstatic, ireturn
 //        return field;
+        // ..., getstatic (super class field), ireturn
+//        return super_field;
 //        return Fibunacci.straight(9);
 //        return Fibunacci.recursive(9);
+//        return field;
+//        Data  d = new Data ();  return 0;
     }
 
 //    private static int  method ()

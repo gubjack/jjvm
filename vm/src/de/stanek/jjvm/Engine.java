@@ -100,7 +100,11 @@ class  Engine
                 if (class_name == null)
                     ; // no super class for java.lang.Object
                 else
-                    initialize (loader. load (class_name));
+                {
+                    JJClass  super_c = loader. load (class_name);
+                    initialize (super_c);
+                    c. super_c = super_c;
+                }
             }
 
             try
