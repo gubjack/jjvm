@@ -6,6 +6,8 @@ import de.stanek.jjvm.JJvmException;
 public class  Heap
 {
 
+    private final JJInstance[]  instances = new JJInstance [10];
+
     // +++ class data +++
 
     // constant pool
@@ -101,6 +103,24 @@ public class  Heap
         int[]  locals = new int[max_locals];
         int[]  stack = new int[max_stack];
         return new JJStackFrame(locals, stack);
+    }
+
+    // instance
+    public JJInstance  createJJInstance (JJClass c)
+        throws JJvmException
+    {
+        int  position = -1;
+        for (int  i = 0;  i < instances.length;  ++i)
+            if (instances[i] == null)
+            {
+                position = i;
+                break;
+            }
+        if (position == -1)
+            throw new JJvmException ("No free position");
+        JJInstance  instance = new JJInstance (c, position);
+        instances [position] = instance;
+        return instance;
     }
 
 }

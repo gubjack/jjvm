@@ -14,6 +14,11 @@ public class  JJStackFrame
     private final int[]  stack;
     private int  pointer = 0;
 
+    public void  dup ()
+    {
+        stack [pointer++] = stack [pointer - 1];
+    }
+
     public void  push (int value)
     {
         stack [pointer++] = value;

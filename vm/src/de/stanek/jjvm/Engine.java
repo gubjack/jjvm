@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 import de.stanek.jjvm.heap.JJCode;
 import de.stanek.jjvm.heap.JJField;
+import de.stanek.jjvm.heap.JJInstance;
 import de.stanek.jjvm.heap.CPFieldRef;
 import de.stanek.jjvm.heap.CPMethodRef;
 import de.stanek.jjvm.heap.CPNameAndType;
@@ -29,6 +30,7 @@ class  Engine
     private final Heap  heap;
     private final Loader  loader;
 
+    private final static byte  nop              = (byte) 0x00;
     private final static byte  iconst_m1        = (byte) 0x02;
     private final static byte  iconst_0         = (byte) 0x03;
     private final static byte  iconst_1         = (byte) 0x04;
@@ -44,11 +46,14 @@ class  Engine
     private final static byte  iload_1          = (byte) 0x1b;
     private final static byte  iload_2          = (byte) 0x1c;
     private final static byte  iload_3          = (byte) 0x1d;
+    private final static byte  aload_0          = (byte) 0x2a;
     private final static byte  istore           = (byte) 0x36;
     private final static byte  istore_0         = (byte) 0x3b;
     private final static byte  istore_1         = (byte) 0x3c;
     private final static byte  istore_2         = (byte) 0x3d;
     private final static byte  istore_3         = (byte) 0x3e;
+    private final static byte  astore_0         = (byte) 0x4b;
+    private final static byte  dup              = (byte) 0x59;
     private final static byte  iadd             = (byte) 0x60;
     private final static byte  isub             = (byte) 0x64;
     private final static byte  imul             = (byte) 0x68;
@@ -77,7 +82,9 @@ class  Engine
     private final static byte  return_          = (byte) 0xb1;
     private final static byte  getstatic        = (byte) 0xb2;
     private final static byte  putstatic        = (byte) 0xb3;
+    private final static byte  invokespecial    = (byte) 0xb7;
     private final static byte  invokestatic     = (byte) 0xb8;
+    private final static byte  new_             = (byte) 0xbb;
 
     void  initialize (JJClass c)
         throws JJvmException, IOException
@@ -157,6 +164,10 @@ class  Engine
             byte  cmd = code. peek (counter);
             switch (cmd)
             {
+                case nop:
+                {
+                    break;
+                }
                 case iconst_m1:
                 {
                     sf. push (-1);
@@ -246,6 +257,12 @@ class  Engine
                     sf. push (value);
                     break;
                 }
+                case aload_0:
+                {
+                    int  position = sf. get (0);
+                    sf. push (position);
+                    break;
+                }
                 case istore:
                 {
                     ++counter;
@@ -276,6 +293,17 @@ class  Engine
                 {
                     int  value = sf. pop ();
                     sf. set (3, value);
+                    break;
+                }
+                case astore_0:
+                {
+                    int  position = sf. pop ();
+                    sf. set (0, position);
+                    break;
+                }
+                case dup:
+                {
+                    sf. dup ();
                     break;
                 }
                 case iadd:
@@ -557,6 +585,45 @@ class  Engine
                     f. value = sf. pop ();
                     break;
                 }
+                case invokespecial:
+                {
+                    JJClass  c;
+                    JJMethod  m;
+                    {
+                        CPMethodRef  mr;
+                        {
+                            short  index = code. nextShort (counter);
+                            counter += 2;
+                            mr = cp. methodref (index);
+                        }
+                        {
+                            String  class_name = cp. className (mr.class_index);
+                            c = loader. load (class_name);
+                            initialize (c);
+                        }
+                        {
+                            String  name;
+                            String  descriptor;
+                            {
+                                CPNameAndType  nt = cp. nameandtype (
+                                                    mr.name_and_type_index);
+                                name = cp. utf8 (nt.name_index);
+                                descriptor = cp. utf8 (nt.descriptor_index);
+                            }
+                            m = c. method (name, descriptor);
+                            if (m == null)
+                                throw new JJvmException ("Missing method "
+                                                        + name + descriptor);
+                        }
+                    }
+
+                    if (m. isNative ())
+                        throw new JJvmException (
+                                "invokespecial_native not implemented");
+                    else
+                        invokespecial (c, m, sf);
+                    break;
+                }
                 case invokestatic:
                 {
                     JJClass  c;
@@ -593,6 +660,20 @@ class  Engine
                         invokestatic_native (c, m, sf);
                     else
                         invokestatic (c, m, sf);
+                    break;
+                }
+                case new_:
+                {
+                    JJClass  c;
+                    {
+                        short  index = code. nextShort (counter);
+                        counter += 2;
+                        String  class_name = cp. className (index);
+                        c = loader. load (class_name);
+                        initialize (c);
+                    }
+                    JJInstance  instance = heap. createJJInstance (c);
+                    sf. push (instance.position);
                     break;
                 }
                 default:
@@ -655,6 +736,29 @@ class  Engine
         // Retrieve result
         if (m.results == 1)
             sfLast. push ((Integer) result);
+    }
+
+    void  invokespecial (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
+        throws JJvmException, IOException
+    {
+        JJCode  code;
+        JJStackFrame  sf;
+        {
+            JJAttributeCode  ac = m. attributeCode ();
+            code = ac. code();
+            sf = heap. createJJStackFrame (ac.max_stack, ac.max_locals);
+        }
+
+        // Feed locals
+        sf. set (0, sfLast. pop ());    // this
+        for (int  i = m.params - 1;  i >= 0;  --i)
+            sf. set (i + 1, sfLast. pop ());
+
+        invokestatic (jjClass, code, sf);
+
+        // Retrieve result
+        if (m.results == 1)
+            sfLast. push (sf. pop ());
     }
 
 }
