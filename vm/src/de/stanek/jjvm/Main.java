@@ -10,10 +10,10 @@ public class  Main
     public static void  main (String[] args)
         throws IOException, JJvmException
     {
-        String  classRoot = "../sample/bin";
+        String  appClasses = "../sample/bin";
         String  clazz = "sample/Simple";
 
-        JVM  jvm = new JVM (classRoot);
+        JVM  jvm = new JVM (appClasses);
 
         int  result = jvm. executeMain (clazz);
 

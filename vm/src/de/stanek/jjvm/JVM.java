@@ -11,11 +11,11 @@ import de.stanek.jjvm.heap.JJStackFrame;
 class  JVM
 {
 
-    JVM (String classRoot)
+    JVM (String appClasses)
     {
         heap = new Heap ();
         Definer  definer = new Definer (heap);
-        loader = new Loader (definer, classRoot);
+        loader = new Loader (definer, appClasses);
         engine = new Engine (heap, loader);
     }
     private final Heap  heap;

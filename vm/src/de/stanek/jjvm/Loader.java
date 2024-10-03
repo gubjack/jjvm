@@ -13,13 +13,13 @@ import de.stanek.jjvm.heap.JJClass;
 class  Loader
 {
 
-    Loader (Definer definer, String classRoot)
+    Loader (Definer definer, String appClasses)
     {
         this.definer = definer;
-        this.classRoot = classRoot;
+        this.appClasses = appClasses;
     }
     private final Definer  definer;
-    private final String  classRoot;
+    private final String  appClasses;
 
     JJClass  load (String name)
         throws IOException, JJvmException
@@ -32,7 +32,7 @@ class  Loader
                 = new DataInputStream (
                         new BufferedInputStream (
                                 Files.newInputStream(
-                                        Path. of (classRoot
+                                        Path. of (appClasses
                                                 , name + ".class")))))
         {
             jjClass = definer. define (dis);
