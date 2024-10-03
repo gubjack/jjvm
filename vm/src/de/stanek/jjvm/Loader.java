@@ -23,7 +23,7 @@ class  Loader
     private final String  bootClasses;
     private final String  appClasses;
 
-    JJClass  load (String name)
+    synchronized JJClass  load (String name)
         throws IOException, JJvmException
     {
         JJClass  jjClass = map. get (name);
