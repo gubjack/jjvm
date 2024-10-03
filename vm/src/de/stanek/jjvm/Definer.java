@@ -45,7 +45,6 @@ class  Definer
         @SuppressWarnings("unused")
         short  access_flags = dis. readShort ();
         short  this_class = dis. readShort ();
-        @SuppressWarnings("unused")
         short  super_class = dis. readShort ();
 
         short  interfaces_count = dis. readShort ();
@@ -55,7 +54,8 @@ class  Definer
         JJMethods  methods = readMethods (dis, cp);
         // Attributes unread
 
-        return heap. createJJClass (cp, this_class, methods, fields);
+        return heap. createJJClass (cp, this_class, super_class
+                                    , methods, fields);
     }
 
     private ConstantPool  readConstantPool (DataInputStream dis)

@@ -92,6 +92,17 @@ class  Engine
                 return;
 
             c.initializing = true;
+// TODO  Clarify circularity situations
+
+            // Initialize super class first
+            {
+                String  class_name = c. super_name;
+                if (class_name == null)
+                    ; // no super class for java.lang.Object
+                else
+                    initialize (loader. load (class_name));
+            }
+
             try
             {
                 JJMethod  m = c. method ("<clinit>", "()V");
@@ -99,8 +110,6 @@ class  Engine
                 {
                     JJStackFrame  sf = heap. createJJStackFrame (0, 0);
                     invokestatic (c, m, sf);
-// TODO  Initialize base class first
-// TODO  Clarify circularity situations
 // TODO  Handle initialization failure
                 }
             }

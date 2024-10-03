@@ -11,9 +11,10 @@ public class  Main
         throws IOException, JJvmException
     {
         String  appClasses = "../sample/bin";
+        String  bootClasses = "boot";
         String  clazz = "sample/Simple";
 
-        JVM  jvm = new JVM (appClasses);
+        JVM  jvm = new JVM (bootClasses, appClasses);
 
         int  result = jvm. executeMain (clazz);
 
