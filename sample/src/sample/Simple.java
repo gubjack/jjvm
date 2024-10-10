@@ -120,6 +120,7 @@ public class  Simple
 //        return Fibunacci.straight(9);
 //        return Fibunacci.recursive(9);
 //        return field;
+        // new, dup, invokespecial, astore_0, ..., nop, return, ..., aload_0
 //        Data  d = new Data ();  return 0;
     }
 
