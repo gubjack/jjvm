@@ -100,9 +100,7 @@ public class  Heap
     // stack frame
     public JJStackFrame  createJJStackFrame (int max_stack, int max_locals)
     {
-        int[]  locals = new int[max_locals];
-        int[]  stack = new int[max_stack];
-        return new JJStackFrame(locals, stack);
+        return new JJStackFrame(max_stack, max_locals);
     }
 
     // instance

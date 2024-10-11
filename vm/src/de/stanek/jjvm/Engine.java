@@ -673,7 +673,7 @@ class  Engine
                         initialize (c);
                     }
                     JJInstance  instance = heap. createJJInstance (c);
-                    sf. push (instance.position);
+                    sf. pusho (instance);
                     break;
                 }
                 default:
@@ -750,7 +750,7 @@ class  Engine
         }
 
         // Feed locals
-        sf. set (0, sfLast. pop ());    // this
+        sf. seto (0, sfLast. popo ());    // this
         for (int  i = m.params - 1;  i >= 0;  --i)
             sf. set (i + 1, sfLast. pop ());
 
