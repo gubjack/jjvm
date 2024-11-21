@@ -259,8 +259,8 @@ class  Engine
                 }
                 case aload_0:
                 {
-                    int  position = sf. get (0);
-                    sf. push (position);
+                    JJInstance  o = sf. geto(0);
+                    sf. pusho (o);
                     break;
                 }
                 case istore:
@@ -297,8 +297,8 @@ class  Engine
                 }
                 case astore_0:
                 {
-                    int  position = sf. pop ();
-                    sf. set (0, position);
+                    JJInstance  o = sf. popo ();
+                    sf. seto (0, o);
                     break;
                 }
                 case dup:
