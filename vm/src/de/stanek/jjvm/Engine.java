@@ -148,13 +148,13 @@ class  Engine
         for (int  i = m.params - 1;  i >= 0;  --i)
             sf. set (i, sfLast. pop ());
 
-        invokestatic (jjClass, code, sf);
+        execute (jjClass, code, sf);
 
         // Retrieve result
         if (m.results == 1)
             sfLast. push (sf. pop ());
     }
-    private void  invokestatic (JJClass jjClass, JJCode code, JJStackFrame sf)
+    private void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
     {
         ConstantPool  cp = jjClass. cp;
@@ -754,7 +754,7 @@ class  Engine
         for (int  i = m.params - 1;  i >= 0;  --i)
             sf. set (i + 1, sfLast. pop ());
 
-        invokestatic (jjClass, code, sf);
+        execute (jjClass, code, sf);
 
         // Retrieve result
         if (m.results == 1)
