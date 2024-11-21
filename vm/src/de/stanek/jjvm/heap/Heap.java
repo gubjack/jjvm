@@ -3,6 +3,7 @@ package de.stanek.jjvm.heap;
 
 import de.stanek.jjvm.JJvmException;
 
+
 public class  Heap
 {
 
@@ -96,6 +97,16 @@ public class  Heap
 
 
     // +++ runtime data +++
+
+    // engine/thread
+    public JJThread  createJJThread ()
+    {
+        JJThread  t = new JJThread ();
+        return t;
+    }
+    public void  freeJJThread (JJThread t)
+    {
+    }
 
     // stack frame
     public JJStackFrame  createJJStackFrame (int max_stack, int max_locals)

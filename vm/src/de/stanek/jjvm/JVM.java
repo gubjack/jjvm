@@ -22,6 +22,11 @@ class  JVM
     private final Loader  loader;
     private final Engine  engine;
 
+    void  cleanup ()
+    {
+        engine. cleanup ();
+    }
+
     int  executeMain (String clazz)
         throws JJvmException, IOException
     {

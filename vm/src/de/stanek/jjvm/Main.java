@@ -18,6 +18,8 @@ public class  Main
 
         int  result = jvm. executeMain (clazz);
 
+        jvm. cleanup ();
+
         System.out.println (result);
     }
 

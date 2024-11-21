@@ -17,6 +17,7 @@ import de.stanek.jjvm.heap.JJAttributeCode;
 import de.stanek.jjvm.heap.JJClass;
 import de.stanek.jjvm.heap.JJMethod;
 import de.stanek.jjvm.heap.JJStackFrame;
+import de.stanek.jjvm.heap.JJThread;
 
 
 class  Engine
@@ -26,9 +27,16 @@ class  Engine
     {
         this.heap = heap;
         this.loader = loader;
+        thread = heap. createJJThread ();
     }
     private final Heap  heap;
     private final Loader  loader;
+    private final JJThread  thread;
+
+    void  cleanup ()
+    {
+        heap. freeJJThread (thread);
+    }
 
     private final static byte  nop              = (byte) 0x00;
     private final static byte  iconst_m1        = (byte) 0x02;
