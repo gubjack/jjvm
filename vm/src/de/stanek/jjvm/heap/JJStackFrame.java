@@ -56,9 +56,14 @@ public class  JJStackFrame
     {
         stack [pointer++]. o = value;
     }
-    public JJInstance  popo ()
+    public JJInstance  popo (JJThread t)
     {
-        return stack [--pointer]. o;
+        JJInstance  o = stack [--pointer]. o;
+        if (o != null)
+        {
+            t. o = o;
+        }
+        return o;
     }
     public void  seto (int index, JJInstance value)
     {

@@ -115,7 +115,7 @@ public class  Heap
     }
 
     // instance
-    public JJInstance  createJJInstance (JJClass c)
+    public synchronized JJInstance  createJJInstance (JJClass c, JJThread t)
         throws JJvmException
     {
         int  position = -1;
@@ -129,6 +129,7 @@ public class  Heap
             throw new JJvmException ("No free position");
         JJInstance  instance = new JJInstance (c, position);
         instances [position] = instance;
+        t. o = instance;
         return instance;
     }
 

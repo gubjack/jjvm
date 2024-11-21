@@ -305,8 +305,9 @@ class  Engine
                 }
                 case astore_0:
                 {
-                    JJInstance  o = sf. popo ();
+                    JJInstance  o = sf. popo (thread);
                     sf. seto (0, o);
+                    thread.o = null;
                     break;
                 }
                 case dup:
@@ -680,8 +681,9 @@ class  Engine
                         c = loader. load (class_name);
                         initialize (c);
                     }
-                    JJInstance  instance = heap. createJJInstance (c);
+                    JJInstance  instance = heap. createJJInstance (c, thread);
                     sf. pusho (instance);
+                    thread.o = null;
                     break;
                 }
                 default:
@@ -758,7 +760,10 @@ class  Engine
         }
 
         // Feed locals
-        sf. seto (0, sfLast. popo ());    // this
+        {
+            sf. seto (0, sfLast. popo (thread));    // this
+            thread. o = null;
+        }
         for (int  i = m.params - 1;  i >= 0;  --i)
             sf. set (i + 1, sfLast. pop ());
 
