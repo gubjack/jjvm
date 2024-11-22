@@ -43,8 +43,6 @@ class  Engine
     void  initialize (JJClass c)
         throws JJvmException, IOException
     {
-        if (diag != null)
-            diag. out ("initialize " + c.name);
         if (c.initialized)  // avoid unnecessary locking
             return;
         synchronized (c)
@@ -54,6 +52,8 @@ class  Engine
             if (c.initialized)  // different thread might see this
                 return;
 
+            if (diag != null)
+                diag. out ("initialize " + c.name);
             c.initializing = true;
 // TODO  Clarify circularity situations
 
@@ -75,9 +75,10 @@ class  Engine
                 JJMethod  m = c. method ("<clinit>", "()V");
                 if (m != null)
                 {
-                    JJStackFrame  sf = heap. createJJStackFrame (0, 0);
-                    invokestatic (c, m, sf);
-                    sf. clear ();
+                    try (JJStackFrame  sf = heap. createJJStackFrame (0, 0))
+                    {
+                        invokestatic (c, m, sf);
+                    }
 // TODO  Handle initialization failure
                 }
             }
@@ -95,25 +96,21 @@ class  Engine
     {
         if (diag != null)
             diag. out ("invokestatic " + jjClass.name + "." + m.name);
-        JJCode  code;
-        JJStackFrame  sf;
+        JJAttributeCode  ac = m. attributeCode ();
+        JJCode  code = ac. code();
+        try (JJStackFrame  sf = heap. createJJStackFrame (
+                                                ac.max_stack, ac.max_locals))
         {
-            JJAttributeCode  ac = m. attributeCode ();
-            code = ac. code();
-            sf = heap. createJJStackFrame (ac.max_stack, ac.max_locals);
+            // Feed locals
+            for (int  i = m.params - 1;  i >= 0;  --i)
+                sf. set (i, sfLast. pop ());
+
+            execute (jjClass, code, sf);
+
+            // Retrieve result
+            if (m.results == 1)
+                sfLast. push (sf. pop ());
         }
-
-        // Feed locals
-        for (int  i = m.params - 1;  i >= 0;  --i)
-            sf. set (i, sfLast. pop ());
-
-        execute (jjClass, code, sf);
-
-        // Retrieve result
-        if (m.results == 1)
-            sfLast. push (sf. pop ());
-
-        sf. clear ();
     }
     private void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
@@ -715,29 +712,25 @@ class  Engine
         if (diag != null)
             diag. out ("invokespecial " + jjClass.name + "." + m.name
                                     + " " + sfLast);
-        JJCode  code;
-        JJStackFrame  sf;
+        JJAttributeCode  ac = m. attributeCode ();
+        JJCode  code = ac. code();
+        try (JJStackFrame  sf = heap. createJJStackFrame (
+                                                ac.max_stack, ac.max_locals))
         {
-            JJAttributeCode  ac = m. attributeCode ();
-            code = ac. code();
-            sf = heap. createJJStackFrame (ac.max_stack, ac.max_locals);
+            // Feed locals
+            {
+                sf. seto (0, sfLast. popo (thread));    // this
+                thread. o = null;
+            }
+            for (int  i = m.params - 1;  i >= 0;  --i)
+                sf. set (i + 1, sfLast. pop ());
+
+            execute (jjClass, code, sf);
+
+            // Retrieve result
+            if (m.results == 1)
+                sfLast. push (sf. pop ());
         }
-
-        // Feed locals
-        {
-            sf. seto (0, sfLast. popo (thread));    // this
-            thread. o = null;
-        }
-        for (int  i = m.params - 1;  i >= 0;  --i)
-            sf. set (i + 1, sfLast. pop ());
-
-        execute (jjClass, code, sf);
-
-        // Retrieve result
-        if (m.results == 1)
-            sfLast. push (sf. pop ());
-
-        sf. clear ();
     }
 
 }

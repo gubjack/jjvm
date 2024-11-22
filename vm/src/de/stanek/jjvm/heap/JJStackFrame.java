@@ -5,6 +5,7 @@ import de.stanek.jjvm.Diagnose;
 
 
 public class  JJStackFrame
+    implements AutoCloseable
 {
 
     JJStackFrame (Diagnose diag, RootCells rootCells
@@ -42,7 +43,8 @@ public class  JJStackFrame
         return "Frame" + System. identityHashCode (this);
     }
 
-    public void  clear ()
+    @Override
+    public void  close ()
     {
         if (diag != null)
             diag. out ("clear " + this);

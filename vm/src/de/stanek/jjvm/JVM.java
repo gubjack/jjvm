@@ -47,11 +47,13 @@ class  JVM
         int  results = Definer. results (descriptor);
         if (results == 0)
             throw new JJvmException ("Main method is expected to return a result");
-        JJStackFrame  sf = heap. createJJStackFrame (results, 0);
 
-        engine. invokestatic (c, m, sf);
+        try (JJStackFrame  sf = heap. createJJStackFrame (results, 0))
+        {
+            engine. invokestatic (c, m, sf);
 
-        return sf. pop ();
+            return sf. pop ();
+        }
     }
 
 }
