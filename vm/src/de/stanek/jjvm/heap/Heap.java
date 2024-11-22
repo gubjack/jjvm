@@ -1,21 +1,25 @@
 
 package de.stanek.jjvm.heap;
 
+import de.stanek.jjvm.Diagnose;
 import de.stanek.jjvm.JJvmException;
 
 
 public class  Heap
 {
 
-    public  Heap ()
+    public  Heap (Diagnose diag)
     {
+        this.diag = diag;
+        rootThreads = new RootThreads (diag);
+        rootCells = new RootCells (diag);
         new Collector (). start ();
     }
-
+    private final Diagnose  diag;
     private JJInstance[]  instances = new JJInstance [10];
     private JJInstance[]  instances2 = new JJInstance [10];
-    private final RootThreads  rootThreads = new RootThreads ();
-    final RootCells  rootCells = new RootCells ();
+    private final RootThreads  rootThreads;
+    private final RootCells  rootCells;
 
     private class  Collector
         extends Thread
@@ -46,7 +50,9 @@ public class  Heap
     }
     private synchronized void  collect ()
     {
-       synchronized (rootThreads)
+        if (diag != null)
+            diag. out ("GC");
+        synchronized (rootThreads)
         {
             for (JJThread  t: rootThreads)
             {
@@ -54,6 +60,8 @@ public class  Heap
                 if (o == null)
                     continue;
                 instances2 [o.position] = o;
+                if (diag != null)
+                    diag. out ("GC " + t + " " + o);
             }
         }
         synchronized (rootCells)
@@ -62,6 +70,8 @@ public class  Heap
             {
                 JJInstance  o = c.o;
                 instances2 [o.position] = o;
+                if (diag != null)
+                    diag. out ("GC " + c + " " + o);
             }
         }
 
@@ -180,8 +190,7 @@ public class  Heap
     // stack frame
     public JJStackFrame  createJJStackFrame (int max_stack, int max_locals)
     {
-        JJStackFrame sf = new JJStackFrame (rootCells, max_stack, max_locals);
-        return sf;
+        return new JJStackFrame (diag, rootCells, max_stack, max_locals);
     }
 
     // instance

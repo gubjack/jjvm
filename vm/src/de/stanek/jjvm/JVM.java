@@ -11,13 +11,15 @@ import de.stanek.jjvm.heap.JJStackFrame;
 class  JVM
 {
 
-    JVM (String bootClasses, String appClasses)
+    JVM (Diagnose diag, String bootClasses, String appClasses)
     {
-        heap = new Heap ();
+        this.diag = diag;
+        heap = new Heap (diag);
         Definer  definer = new Definer (heap);
         loader = new Loader (definer, bootClasses, appClasses);
-        engine = new Engine (heap, loader);
+        engine = new Engine (diag, heap, loader);
     }
+    private final Diagnose  diag;
     private final Heap  heap;
     private final Loader  loader;
     private final Engine  engine;
@@ -33,6 +35,8 @@ class  JVM
         // main method is at the moment 'public static int caluclate()'
         String  name = "calculate";
         String  descriptor = "()I";
+        if (diag != null)
+            diag. out ("executeMain " + clazz + "." + name + descriptor);
 
         JJClass  c = loader. load (clazz);
         engine. initialize (c);     // this explicitely is required here

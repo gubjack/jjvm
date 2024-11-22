@@ -14,11 +14,18 @@ public class  Main
         String  bootClasses = "boot";
         String  clazz = "sample/Simple";
 
-        JVM  jvm = new JVM (bootClasses, appClasses);
+        Diagnose  diag =  Boolean. getBoolean ("jjvm.diagnose")
+                            ?  new Diagnose ()
+                            :  null;
+
+        JVM  jvm = new JVM (diag, bootClasses, appClasses);
 
         int  result = jvm. executeMain (clazz);
 
         jvm. cleanup ();
+
+        if (diag != null)
+            diag. sleep ();
 
         System.out.println (result);
     }

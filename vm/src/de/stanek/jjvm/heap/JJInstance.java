@@ -13,4 +13,9 @@ public class  JJInstance
     private final JJClass  c;
     final int  position;
 
+    public String  toString ()
+    {
+        return "Instance" + System. identityHashCode (this);
+    }
+
 }

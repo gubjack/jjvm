@@ -1,12 +1,16 @@
 
 package  de.stanek.jjvm.heap;
 
+import de.stanek.jjvm.Diagnose;
+
 
 public class  JJStackFrame
 {
 
-    JJStackFrame (RootCells rootCells, int max_stack, int max_locals)
+    JJStackFrame (Diagnose diag, RootCells rootCells
+                    , int max_stack, int max_locals)
     {
+        this.diag = diag;
         this.rootCells = rootCells;
         locals = new Cell[max_locals];
         for (int i = 0;  i < locals.length;  ++i)
@@ -14,7 +18,10 @@ public class  JJStackFrame
         stack = new Cell[max_stack];
         for (int i = 0;  i < stack.length;  ++i)
             stack [i] = new Cell ();
+        if (diag != null)
+            diag. out ("new " + this);
     }
+    private final Diagnose  diag;
     private final RootCells  rootCells;
     private final Cell[]  locals;
     private final Cell[]  stack;
@@ -24,10 +31,21 @@ public class  JJStackFrame
     {
         int i;
         JJInstance o;
+        public String  toString ()
+        {
+            return "Cell" + System. identityHashCode (this);
+        }
+    }
+
+    public String  toString ()
+    {
+        return "Frame" + System. identityHashCode (this);
     }
 
     public void  clear ()
     {
+        if (diag != null)
+            diag. out ("clear " + this);
         for (int i = 0;  i < pointer;  ++i)
         {
             Cell  c = stack [i];

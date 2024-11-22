@@ -23,12 +23,14 @@ import de.stanek.jjvm.heap.JJThread;
 class  Engine
 {
 
-    Engine (Heap heap, Loader loader)
+    Engine (Diagnose diag, Heap heap, Loader loader)
     {
+        this.diag = diag;
         this.heap = heap;
         this.loader = loader;
         thread = heap. createJJThread ();
     }
+    private final Diagnose  diag;
     private final Heap  heap;
     private final Loader  loader;
     private final JJThread  thread;
@@ -41,6 +43,8 @@ class  Engine
     void  initialize (JJClass c)
         throws JJvmException, IOException
     {
+        if (diag != null)
+            diag. out ("initialize " + c.name);
         if (c.initialized)  // avoid unnecessary locking
             return;
         synchronized (c)
@@ -89,6 +93,8 @@ class  Engine
     void  invokestatic (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
     {
+        if (diag != null)
+            diag. out ("invokestatic " + jjClass.name + "." + m.name);
         JJCode  code;
         JJStackFrame  sf;
         {
@@ -112,11 +118,19 @@ class  Engine
     private void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
     {
+        if (diag != null)
+            diag. out ("execute " + jjClass.name + " " + sf);
         ConstantPool  cp = jjClass. cp;
 
         for (int counter = 0;  ;  ++counter)
         {
             byte  cmd = code. peek (counter);
+            if (diag != null)
+            {
+                diag. sleep ();
+                diag. out ("execute " + sf
+                                        + " " + Commands. cmdToString (cmd));
+            }
             switch (cmd)
             {
                 case Commands.nop:
@@ -698,6 +712,9 @@ class  Engine
     void  invokespecial (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
     {
+        if (diag != null)
+            diag. out ("invokespecial " + jjClass.name + "." + m.name
+                                    + " " + sfLast);
         JJCode  code;
         JJStackFrame  sf;
         {

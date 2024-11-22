@@ -2,7 +2,7 @@
 package de.stanek.jjvm;
 
 
-class Commands
+class  Commands
 {
 
     final static byte  nop              = (byte) 0x00;
@@ -60,5 +60,69 @@ class Commands
     final static byte  invokespecial    = (byte) 0xb7;
     final static byte  invokestatic     = (byte) 0xb8;
     final static byte  new_             = (byte) 0xbb;
+
+    static String  cmdToString (byte cmd)
+    {
+        switch (cmd)
+        {
+            case nop:               return "nop";
+            case iconst_m1:         return "iconst_m1";
+            case iconst_0:          return "iconst_0";
+            case iconst_1:          return "iconst_1";
+            case iconst_2:          return "iconst_2";
+            case iconst_3:          return "iconst_3";
+            case iconst_4:          return "iconst_4";
+            case iconst_5:          return "iconst_5";
+            case bipush:            return "bipush";
+            case sipush:            return "sipush";
+            case ldc:               return "ldc";
+            case iload:             return "iload";
+            case iload_0:           return "iload_0";
+            case iload_1:           return "iload_1";
+            case iload_2:           return "iload_2";
+            case iload_3:           return "iload_3";
+            case aload_0:           return "aload_0";
+            case istore:            return "istore";
+            case istore_0:          return "istore_0";
+            case istore_1:          return "istore_1";
+            case istore_2:          return "istore_2";
+            case istore_3:          return "istore_3";
+            case astore_0:          return "astore_0";
+            case dup:               return "dup";
+            case iadd:              return "iadd";
+            case isub:              return "isub";
+            case imul:              return "imul";
+            case ineg:              return "ineg";
+            case ishl:              return "ishl";
+            case ishr:              return "ishr";
+            case iushr:             return "iushr";
+            case iand:              return "iand";
+            case ior:               return "ior";
+            case ixor:              return "ixor";
+            case iinc:              return "iinc";
+            case ifeq:              return "ifeq";
+            case ifne:              return "ifne";
+            case iflt:              return "iflt";
+            case ifge:              return "ifge";
+            case ifgt:              return "ifgt";
+            case ifle:              return "ifle";
+            case if_icmpeq:         return "if_icmpeq";
+            case if_icmpne:         return "if_icmpne";
+            case if_icmplt:         return "if_icmplt";
+            case if_icmpge:         return "if_icmpge";
+            case if_icmpgt:         return "if_icmpgt";
+            case if_icmple:         return "if_icmple";
+            case goto_:             return "goto";
+            case ireturn:           return "ireturn";
+            case return_:           return "return";
+            case getstatic:         return "getstatic";
+            case putstatic:         return "putstatic";
+            case invokespecial:     return "invokespecial";
+            case invokestatic:      return "invokestatic";
+            case new_:              return "new";
+            default:
+                return "<command 0x" + Integer.toHexString(cmd & 0xff) + ">";
+        }
+    }
 
 }
