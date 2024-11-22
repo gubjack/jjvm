@@ -16,10 +16,12 @@ public class  Heap
         new Collector (). start ();
     }
     private final Diagnose  diag;
-    private JJInstance[]  instances = new JJInstance [10];
-    private JJInstance[]  instances2 = new JJInstance [10];
     private final RootThreads  rootThreads;
     private final RootCells  rootCells;
+
+    private final static int  INSTANCES = 10;
+    private JJInstance[]  instances = new JJInstance [INSTANCES];
+    private JJInstance[]  instances2 = new JJInstance [INSTANCES];
 
     private class  Collector
         extends Thread
@@ -198,7 +200,7 @@ public class  Heap
         throws JJvmException
     {
         int  position = -1;
-        for (int  i = 0;  i < instances.length;  ++i)
+        for (int  i = 0;  i < INSTANCES;  ++i)
             if (instances[i] == null)
             {
                 position = i;
