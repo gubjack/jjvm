@@ -129,6 +129,7 @@ class  Engine
                 {
                     JJStackFrame  sf = heap. createJJStackFrame (0, 0);
                     invokestatic (c, m, sf);
+                    sf. clear ();
 // TODO  Handle initialization failure
                 }
             }
@@ -161,6 +162,8 @@ class  Engine
         // Retrieve result
         if (m.results == 1)
             sfLast. push (sf. pop ());
+
+        sf. clear ();
     }
     private void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
@@ -772,6 +775,8 @@ class  Engine
         // Retrieve result
         if (m.results == 1)
             sfLast. push (sf. pop ());
+
+        sf. clear ();
     }
 
 }

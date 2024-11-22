@@ -11,6 +11,6 @@ public class  JJInstance
         this.position = position;
     }
     private final JJClass  c;
-    private final int  position;
+    final int  position;
 
 }

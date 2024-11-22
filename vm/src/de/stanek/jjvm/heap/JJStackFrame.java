@@ -5,8 +5,9 @@ package  de.stanek.jjvm.heap;
 public class  JJStackFrame
 {
 
-    JJStackFrame (int max_stack, int max_locals)
+    JJStackFrame (RootCells rootCells, int max_stack, int max_locals)
     {
+        this.rootCells = rootCells;
         locals = new Cell[max_locals];
         for (int i = 0;  i < locals.length;  ++i)
             locals [i] = new Cell ();
@@ -14,14 +15,33 @@ public class  JJStackFrame
         for (int i = 0;  i < stack.length;  ++i)
             stack [i] = new Cell ();
     }
+    private final RootCells  rootCells;
     private final Cell[]  locals;
     private final Cell[]  stack;
     private int  pointer = 0;
 
-    private static class  Cell
+    static class  Cell
     {
         int i;
         JJInstance o;
+    }
+
+    public void  clear ()
+    {
+        for (int i = 0;  i < pointer;  ++i)
+        {
+            Cell  c = stack [i];
+            JJInstance  o = c. o;
+            if (o != null)
+                rootCells. remove (c);
+        }
+        for (int i = 0;  i < locals.length;  ++i)
+        {
+            Cell  c = locals [i];
+            JJInstance  o = c. o;
+            if (o != null)
+                rootCells. remove (c);
+        }
     }
 
     public void  dup ()
@@ -54,20 +74,33 @@ public class  JJStackFrame
 
     public void  pusho (JJInstance value)
     {
-        stack [pointer++]. o = value;
+        Cell  c = stack [pointer++];
+        c. o = value;
+        if (value != null)
+            rootCells. add (c);
     }
     public JJInstance  popo (JJThread t)
     {
-        JJInstance  o = stack [--pointer]. o;
+        Cell  c = stack [--pointer];
+        JJInstance  o = c. o;
         if (o != null)
         {
             t. o = o;
+            rootCells. remove (c);
         }
         return o;
     }
     public void  seto (int index, JJInstance value)
     {
-        locals [index]. o = value;
+        Cell  c = locals [index];
+        JJInstance  o = c. o;
+        if (o == value)
+            return;
+        if (o != null  &&  value == null)
+            rootCells. remove (c);
+        c. o = value;
+        if (value != null  &&  o == null)
+            rootCells. add (c);
     }
     public JJInstance  geto (int index)
     {

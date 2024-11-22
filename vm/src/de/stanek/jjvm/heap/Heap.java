@@ -7,7 +7,74 @@ import de.stanek.jjvm.JJvmException;
 public class  Heap
 {
 
-    private final JJInstance[]  instances = new JJInstance [10];
+    public  Heap ()
+    {
+        new Collector (). start ();
+    }
+
+    private JJInstance[]  instances = new JJInstance [10];
+    private JJInstance[]  instances2 = new JJInstance [10];
+    private final RootThreads  rootThreads = new RootThreads ();
+    final RootCells  rootCells = new RootCells ();
+
+    private class  Collector
+        extends Thread
+    {
+
+        Collector ()
+        {
+            setDaemon (true);
+        }
+
+        public void  run ()
+        {
+            try
+            {
+                for (;;)
+                {
+                    Thread.sleep (1000);
+                    collect ();
+                }
+            }
+            catch (InterruptedException e)
+            {
+                e. printStackTrace ();
+                System. exit (1);
+            }
+        }
+
+    }
+    private synchronized void  collect ()
+    {
+       synchronized (rootThreads)
+        {
+            for (JJThread  t: rootThreads)
+            {
+                JJInstance  o = t.o;
+                if (o == null)
+                    continue;
+                instances2 [o.position] = o;
+            }
+        }
+        synchronized (rootCells)
+        {
+            for (JJStackFrame.Cell  c: rootCells)
+            {
+                JJInstance  o = c.o;
+                instances2 [o.position] = o;
+            }
+        }
+
+        JJInstance[]  instances3 = instances;
+        instances = instances2;
+        instances2 = instances3;
+
+        // free remaining
+// TODO  finalization etc.
+        for (int  i = 0;  i < instances2.length;  ++i)
+            instances2 [i] = null;
+    }
+
 
     // +++ class data +++
 
@@ -102,16 +169,19 @@ public class  Heap
     public JJThread  createJJThread ()
     {
         JJThread  t = new JJThread ();
+        rootThreads. add (t);
         return t;
     }
     public void  freeJJThread (JJThread t)
     {
+        rootThreads. remove (t);
     }
 
     // stack frame
     public JJStackFrame  createJJStackFrame (int max_stack, int max_locals)
     {
-        return new JJStackFrame(max_stack, max_locals);
+        JJStackFrame sf = new JJStackFrame (rootCells, max_stack, max_locals);
+        return sf;
     }
 
     // instance
