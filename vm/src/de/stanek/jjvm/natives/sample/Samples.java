@@ -2,7 +2,7 @@
 package de.stanek.jjvm.natives.sample;
 
 
-public class  Simple
+public class  Samples
 {
 
     public static void  println (int value)
