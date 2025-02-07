@@ -6,7 +6,6 @@ import java.io.IOException;
 import de.stanek.jjvm.heap.Heap;
 import de.stanek.jjvm.heap.JJClass;
 import de.stanek.jjvm.heap.JJMethod;
-import de.stanek.jjvm.heap.JJStackFrame;
 
 class  JVM
 {
@@ -32,11 +31,12 @@ class  JVM
     int  executeMain (String clazz)
         throws JJvmException, IOException
     {
+        if (diag != null)
+            diag. out ("executeMain " + clazz);
+
         // main method is at the moment 'public static int caluclate()'
         String  name = "calculate";
         String  descriptor = "()I";
-        if (diag != null)
-            diag. out ("executeMain " + clazz + "#" + name + descriptor);
 
         JJClass  c = loader. load (clazz);
         engine. initialize (c);     // this explicitely is required here

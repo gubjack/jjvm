@@ -25,6 +25,11 @@ public class  JJMethod
     private final JJAttributes jjAttributes;
     public final int  params, results;
 
+    public String  toString ()
+    {
+        return name + descriptor;
+    }
+
     public boolean  isNative ()
     {
         return  0 != (access_flags & ACC_NATIVE);

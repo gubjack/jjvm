@@ -53,7 +53,7 @@ class  Engine
                 return;
 
             if (diag != null)
-                diag. out ("initialize " + c.name);
+                diag. out ("initialize " + c);
             c.initializing = true;
 // TODO  Clarify circularity situations
 
@@ -104,7 +104,7 @@ class  Engine
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("run " + c.name + "." + m.name);
+            diag. out ("run " + c + "#" + m);
         try (JJStackFrame  sf = heap. createJJStackFrame (1, 0))
         {
             invokestatic (c, m, sf);
@@ -117,7 +117,7 @@ class  Engine
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("execute " + jjClass.name + " " + sf);
+            diag. out ("execute " + jjClass + " " + sf);
         ConstantPool  cp = jjClass. cp;
 
         for (int counter = 0;  ;  ++counter)
@@ -126,8 +126,7 @@ class  Engine
             if (diag != null)
             {
                 diag. sleep ();
-                diag. out ("execute " + sf
-                                        + " " + Commands. cmdToString (cmd));
+                diag. out ("execute " + sf + " " + Commands. cmdToString (cmd));
             }
             switch (cmd)
             {
@@ -657,7 +656,7 @@ class  Engine
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invokestatic " + c.name + "." + m.name);
+            diag. out ("invokestatic " + c + "#" + m);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (
@@ -733,8 +732,7 @@ class  Engine
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invokespecial " + c.name + "." + m.name
-                                    + " " + sfLast);
+            diag. out ("invokespecial " + c + "#" + m + " " + sfLast);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (

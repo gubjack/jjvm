@@ -37,6 +37,11 @@ public class  JJClass
     public JJClass  super_c;
     public JJClass[]  interfaces_c;
 
+    public String  toString ()
+    {
+        return name;
+    }
+
     public JJField  field (String name, String descriptor)
         throws JJvmException
     {
