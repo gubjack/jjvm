@@ -100,27 +100,6 @@ class  Engine
         }
     }
 
-    void  invokestatic (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
-        throws JJvmException, IOException
-    {
-        if (diag != null)
-            diag. out ("invokestatic " + jjClass.name + "." + m.name);
-        JJAttributeCode  ac = m. attributeCode ();
-        JJCode  code = ac. code();
-        try (JJStackFrame  sf = heap. createJJStackFrame (
-                                                ac.max_stack, ac.max_locals))
-        {
-            // Feed locals
-            for (int  i = m.params - 1;  i >= 0;  --i)
-                sf. set (i, sfLast. pop ());
-
-            execute (jjClass, code, sf);
-
-            // Retrieve result
-            if (m.results == 1)
-                sfLast. push (sf. pop ());
-        }
-    }
     private void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
     {
@@ -661,6 +640,28 @@ class  Engine
         }
     }
 
+    void  invokestatic (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
+        throws JJvmException, IOException
+    {
+        if (diag != null)
+            diag. out ("invokestatic " + jjClass.name + "." + m.name);
+        JJAttributeCode  ac = m. attributeCode ();
+        JJCode  code = ac. code();
+        try (JJStackFrame  sf = heap. createJJStackFrame (
+                                                ac.max_stack, ac.max_locals))
+        {
+            // Feed locals
+            for (int  i = m.params - 1;  i >= 0;  --i)
+                sf. set (i, sfLast. pop ());
+
+            execute (jjClass, code, sf);
+
+            // Retrieve result
+            if (m.results == 1)
+                sfLast. push (sf. pop ());
+        }
+    }
+
     private void  invokestatic_native (JJClass c, JJMethod m
                                         , JJStackFrame sfLast)
         throws JJvmException
@@ -715,7 +716,7 @@ class  Engine
             sfLast. push ((Integer) result);
     }
 
-    void  invokespecial (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
+    private void  invokespecial (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
     {
         if (diag != null)
