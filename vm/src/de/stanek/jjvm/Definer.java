@@ -46,15 +46,13 @@ class  Definer
         short  access_flags = dis. readShort ();
         short  this_class = dis. readShort ();
         short  super_class = dis. readShort ();
+        short[]  interfaces = readInterfaces (dis);
 
-        short  interfaces_count = dis. readShort ();
-        if (interfaces_count > 0)
-            throw new JJvmException ("Interfaces implemented");
         JJFields  fields = readFields (dis, cp);
         JJMethods  methods = readMethods (dis, cp);
         // Attributes unread
 
-        return heap. createJJClass (cp, this_class, super_class
+        return heap. createJJClass (cp, this_class, super_class, interfaces
                                     , methods, fields);
     }
 
@@ -125,6 +123,20 @@ class  Definer
             }
         }
         return cp;
+    }
+
+    private short[]  readInterfaces (DataInputStream dis)
+        throws IOException, JJvmException
+    {
+        short  interfaces_count = dis. readShort ();
+        short[]  interfaces = new short[interfaces_count];
+
+        for (short  index = 0;  index < interfaces_count;  ++index)
+        {
+            short  name_index = dis. readShort ();
+            interfaces [index] = name_index;
+        }
+        return interfaces;
     }
 
     private JJFields  readFields (DataInputStream dis, ConstantPool cp)

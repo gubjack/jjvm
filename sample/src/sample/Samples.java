@@ -7,7 +7,13 @@ import jjvm.lang.Console;
 @SuppressWarnings("unused")
 class  Samples
     extends Super
+    implements Face, Face2
 {
+
+    public int  reckon ()
+    {
+        return 0;
+    }
 
     public static int  run ()
     {

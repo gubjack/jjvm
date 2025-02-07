@@ -70,6 +70,15 @@ class  Engine
                 }
             }
 
+            // Initialize interface classes
+            for (int  i = 0;  i < c. interfaces_name. length;  ++i)
+            {
+                String  interface_name = c. interfaces_name [i];
+                JJClass  interface_c = loader. load (interface_name);
+                initialize (interface_c);
+                c. interfaces_c [i] = interface_c;
+            }
+
             try
             {
                 JJMethod  m = c. method ("<clinit>", "()V");
