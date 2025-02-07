@@ -36,7 +36,7 @@ class  JVM
         String  name = "calculate";
         String  descriptor = "()I";
         if (diag != null)
-            diag. out ("executeMain " + clazz + "." + name + descriptor);
+            diag. out ("executeMain " + clazz + "#" + name + descriptor);
 
         JJClass  c = loader. load (clazz);
         engine. initialize (c);     // this explicitely is required here
@@ -45,15 +45,11 @@ class  JVM
         if (m == null)
             throw new JJvmException ("Missing method " + name + descriptor);
         int  results = Definer. results (descriptor);
-        if (results == 0)
-            throw new JJvmException ("Main method is expected to return a result");
+        if (results != 1)
+            throw new JJvmException (
+                                "Main method is expected to return a result");
 
-        try (JJStackFrame  sf = heap. createJJStackFrame (results, 0))
-        {
-            engine. invokestatic (c, m, sf);
-
-            return sf. pop ();
-        }
+        return engine. run (c, m);
     }
 
 }

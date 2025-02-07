@@ -100,6 +100,19 @@ class  Engine
         }
     }
 
+    int  run (JJClass c, JJMethod m)
+        throws JJvmException, IOException
+    {
+        if (diag != null)
+            diag. out ("run " + c.name + "." + m.name);
+        try (JJStackFrame  sf = heap. createJJStackFrame (1, 0))
+        {
+            invokestatic (c, m, sf);
+
+            return sf. pop ();
+        }
+    }
+
     private void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
         throws JJvmException, IOException
     {
@@ -640,11 +653,11 @@ class  Engine
         }
     }
 
-    void  invokestatic (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
+    private void  invokestatic (JJClass c, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invokestatic " + jjClass.name + "." + m.name);
+            diag. out ("invokestatic " + c.name + "." + m.name);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (
@@ -654,7 +667,7 @@ class  Engine
             for (int  i = m.params - 1;  i >= 0;  --i)
                 sf. set (i, sfLast. pop ());
 
-            execute (jjClass, code, sf);
+            execute (c, code, sf);
 
             // Retrieve result
             if (m.results == 1)
@@ -716,11 +729,11 @@ class  Engine
             sfLast. push ((Integer) result);
     }
 
-    private void  invokespecial (JJClass jjClass, JJMethod m, JJStackFrame sfLast)
+    private void  invokespecial (JJClass c, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invokespecial " + jjClass.name + "." + m.name
+            diag. out ("invokespecial " + c.name + "." + m.name
                                     + " " + sfLast);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
@@ -735,7 +748,7 @@ class  Engine
             for (int  i = m.params - 1;  i >= 0;  --i)
                 sf. set (i + 1, sfLast. pop ());
 
-            execute (jjClass, code, sf);
+            execute (c, code, sf);
 
             // Retrieve result
             if (m.results == 1)
