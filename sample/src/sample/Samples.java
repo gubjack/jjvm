@@ -5,6 +5,7 @@ import jjvm.lang.Console;
 
 
 @SuppressWarnings("unused")
+//@Deprecated
 class  Samples
     extends Super
     implements Face, Face2

@@ -50,10 +50,14 @@ class  Definer
 
         JJFields  fields = readFields (dis, cp);
         JJMethods  methods = readMethods (dis, cp);
-        // Attributes unread
+        JJAttributes  attributes = readAttributes (dis, cp);
+
+        if (-1 != dis. read ())
+            throw new JJvmException (
+                                "Unexpected trailing byte in class stream");
 
         return heap. createJJClass (cp, this_class, super_class, interfaces
-                                    , methods, fields);
+                                    , methods, fields, attributes);
     }
 
     private ConstantPool  readConstantPool (DataInputStream dis)

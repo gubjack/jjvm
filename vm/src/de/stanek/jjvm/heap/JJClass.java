@@ -8,7 +8,8 @@ public class  JJClass
 {
 
     JJClass (ConstantPool cp, short this_class, short super_class
-            , short[] interfaces, JJMethods jjMethods, JJFields fields)
+            , short[] interfaces, JJMethods jjMethods, JJFields fields
+            , JJAttributes attributes)
         throws JJvmException
     {
         this.cp = cp;
@@ -21,6 +22,7 @@ public class  JJClass
             interfaces_name [i] = cp. className (interfaces [i]);
         this.jjMethods = jjMethods;
         this.fields = fields;
+        this.attributes = attributes;
         interfaces_c = new JJClass [interfaces_count];
     }
     public final ConstantPool  cp;
@@ -29,6 +31,8 @@ public class  JJClass
     public final String[]  interfaces_name;
     private final JJMethods  jjMethods;
     private final JJFields  fields;
+    @SuppressWarnings("unused")
+    private final JJAttributes  attributes;
     public boolean  initialized, initializing;
     public JJClass  super_c;
     public JJClass[]  interfaces_c;

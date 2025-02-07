@@ -168,11 +168,12 @@ public class  Heap
     // class
     public JJClass  createJJClass (ConstantPool cp, short this_class
                                     , short super_class, short[] interfaces
-                                    , JJMethods methods, JJFields fields)
+                                    , JJMethods methods, JJFields fields
+                                    , JJAttributes attributes)
         throws JJvmException
     {
         return new JJClass (cp, this_class, super_class
-                            , interfaces, methods, fields);
+                            , interfaces, methods, fields, attributes);
     }
 
 
