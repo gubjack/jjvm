@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.stanek.jjvm.heap.Heap;
 import de.stanek.jjvm.heap.JJClass;
+import de.stanek.jjvm.heap.JJDescriptor;
 import de.stanek.jjvm.heap.JJMethod;
 
 class  JVM
@@ -44,7 +45,7 @@ class  JVM
         JJMethod  m = c. method (name, descriptor);
         if (m == null)
             throw new JJvmException ("Missing method " + name + descriptor);
-        int  results = Definer. results (descriptor);
+        int  results = JJDescriptor. results (descriptor);
         if (results != 1)
             throw new JJvmException (
                                 "Main method is expected to return a result");

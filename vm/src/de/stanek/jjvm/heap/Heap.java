@@ -151,18 +151,22 @@ public class  Heap
         return new JJField (access_flags, name, descriptor, attributes);
     }
 
+    // descriptors
+    public JJDescriptor  createJJDescriptor (String descriptor)
+    {
+        return new JJDescriptor (descriptor);
+    }
+
     // methods
     public JJMethods  createJJMethods (short methods_count)
     {
         return new JJMethods (methods_count);
     }
-    public JJMethod  createJJMethod (short access_flags
-                                    , String name, String descriptor
-                                    , JJAttributes attributes
-                                    , int params, int results)
+    public JJMethod  createJJMethod (short access_flags, String name
+                                    , JJDescriptor descriptor
+                                    , JJAttributes attributes)
     {
-        return new JJMethod (access_flags, name, descriptor, attributes
-                            , params, results);
+        return new JJMethod (access_flags, name, descriptor, attributes);
     }
 
     // class

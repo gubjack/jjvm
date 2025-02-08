@@ -9,19 +9,19 @@ public class  JJMethod
 
     private final static short  ACC_NATIVE          = 0x0100;
 
-    JJMethod (short access_flags, String name, String descriptor
-            , JJAttributes jjAttributes, int params, int results)
+    JJMethod (short access_flags, String name, JJDescriptor descriptor
+            , JJAttributes jjAttributes)
     {
         this.access_flags = access_flags;
         this.name = name;
         this.descriptor = descriptor;
         this.jjAttributes = jjAttributes;
-        this.params = params;
-        this.results = results;
+        this.params = descriptor. params;
+        this.results = descriptor. results;
     }
     final short  access_flags;
     public final String  name;
-    final String  descriptor;
+    final JJDescriptor  descriptor;
     private final JJAttributes jjAttributes;
     public final int  params, results;
 

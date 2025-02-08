@@ -15,7 +15,9 @@ import de.stanek.jjvm.heap.Heap;
 import de.stanek.jjvm.heap.JJAttribute;
 import de.stanek.jjvm.heap.JJAttributes;
 import de.stanek.jjvm.heap.JJClass;
+import de.stanek.jjvm.heap.JJDescriptor;
 import de.stanek.jjvm.heap.JJFields;
+import de.stanek.jjvm.heap.JJMethod;
 import de.stanek.jjvm.heap.JJMethods;
 
 
@@ -174,6 +176,8 @@ class  Definer
         short  methods_count = dis. readShort ();
         JJMethods  methods = heap. createJJMethods (methods_count);
 
+        JJDescriptor[]  descriptors = new JJDescriptor [cp. count];   // cache
+
         for (short  index = 0;  index < methods_count;  ++index)
         {
             short  access_flags = dis. readShort ();
@@ -182,35 +186,20 @@ class  Definer
             String  name = cp. utf8 (name_index);
 
             short  descriptor_index = dis. readShort ();
-            String  descriptor = cp. utf8 (descriptor_index);
+            JJDescriptor  descriptor = descriptors [descriptor_index];
+            if (descriptor == null)
+            {
+                String  descriptor_string = cp. utf8 (descriptor_index);
+                descriptor = heap. createJJDescriptor (descriptor_string);
+                descriptors [descriptor_index] = descriptor;
+            }
 
-            int  params = params (descriptor);
-            int  results = results (descriptor);
-
-            JJAttributes  jjAttributes = readAttributes (dis, cp);
-            methods. set (index, 
-                            heap. createJJMethod (
-                                    access_flags, name, descriptor
-                                    , jjAttributes, params, results));
+            JJAttributes  attributes = readAttributes (dis, cp);
+            JJMethod  method = heap. createJJMethod (
+                                    access_flags, name, descriptor, attributes);
+            methods. set (index, method);
         }
         return methods;
-    }
-    private static int  params (String descriptor)
-    {
-        int  params = 0;
-        for (int  i = 1;  i < descriptor.length ();  ++i)
-        {
-            char  c = descriptor. charAt (i);
-            if (c == ')')
-                break;
-            ++params;
-        }
-        return params;
-    }
-    public static int  results (String descriptor)
-    {
-        return  descriptor. charAt (descriptor. length () - 1) == 'I'
-                ?  1  :  0;
     }
     private JJAttributes  readAttributes (DataInputStream dis, ConstantPool cp)
         throws IOException, JJvmException

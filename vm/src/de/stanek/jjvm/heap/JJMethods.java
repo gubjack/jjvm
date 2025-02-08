@@ -39,7 +39,7 @@ public class  JJMethods
         for (JJMethod method: methods)
         {
             if (    method. name. equals (name)
-                &&  method. descriptor. equals (descriptor))
+                &&  method. descriptor. string. equals (descriptor))
                 return method;
         }
         return null;

@@ -15,9 +15,11 @@ public class  ConstantPool
 
     ConstantPool (short constant_pool_count)
     {
+        this.count = constant_pool_count;
         tags = new byte [constant_pool_count];
         entries = new CPEntry [constant_pool_count];
     }
+    public final int  count;
     private final byte[]  tags;
     private final CPEntry[]  entries;
 
