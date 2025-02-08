@@ -36,12 +36,9 @@ public class  JJMethods
     public JJMethod  method (String name, String descriptor)
         throws JJvmException
     {
-        for (JJMethod method: methods)
-        {
-            if (    method. name. equals (name)
-                &&  method. descriptor. string. equals (descriptor))
+        for (JJMethod  method: methods)
+            if (method. equals (name, descriptor))
                 return method;
-        }
         return null;
     }
 
