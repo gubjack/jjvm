@@ -184,14 +184,7 @@ class  Definer
             short  descriptor_index = dis. readShort ();
             String  descriptor = cp. utf8 (descriptor_index);
 
-            int  params = 0;
-            for (int  i = 1;  i < descriptor.length ();  ++i)
-            {
-                char  c = descriptor. charAt (i);
-                if (c == ')')
-                    break;
-                ++params;
-            }
+            int  params = params (descriptor);
             int  results = results (descriptor);
 
             JJAttributes  jjAttributes = readAttributes (dis, cp);
@@ -202,8 +195,22 @@ class  Definer
         }
         return methods;
     }
-    public static int  results (String descriptor) {
-        return  descriptor. charAt (descriptor. length () - 1) == 'I'  ?  1  :  0;
+    private static int  params (String descriptor)
+    {
+        int  params = 0;
+        for (int  i = 1;  i < descriptor.length ();  ++i)
+        {
+            char  c = descriptor. charAt (i);
+            if (c == ')')
+                break;
+            ++params;
+        }
+        return params;
+    }
+    public static int  results (String descriptor)
+    {
+        return  descriptor. charAt (descriptor. length () - 1) == 'I'
+                ?  1  :  0;
     }
     private JJAttributes  readAttributes (DataInputStream dis, ConstantPool cp)
         throws IOException, JJvmException
