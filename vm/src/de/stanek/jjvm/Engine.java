@@ -105,7 +105,7 @@ class  Engine
     {
         if (diag != null)
             diag. out ("run " + c + "#" + m);
-        try (JJStackFrame  sf = heap. createJJStackFrame (1, 0))
+        try (JJStackFrame  sf = heap. createJJStackFrame (0, 1))
         {
             invokestatic (c, m, sf);
 
@@ -659,8 +659,8 @@ class  Engine
             diag. out ("invokestatic " + c + "#" + m);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
-        try (JJStackFrame  sf = heap. createJJStackFrame (
-                                                ac.max_stack, ac.max_locals))
+        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
+                                                            , ac.max_stack))
         {
             // Feed locals
             for (int  i = m.params - 1;  i >= 0;  --i)
@@ -735,8 +735,8 @@ class  Engine
             diag. out ("invokespecial " + c + "#" + m + " " + sfLast);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
-        try (JJStackFrame  sf = heap. createJJStackFrame (
-                                                ac.max_stack, ac.max_locals))
+        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
+                                                            , ac.max_stack))
         {
             // Feed locals
             {

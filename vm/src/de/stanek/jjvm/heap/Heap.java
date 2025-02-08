@@ -192,9 +192,9 @@ public class  Heap
     }
 
     // stack frame
-    public JJStackFrame  createJJStackFrame (int max_stack, int max_locals)
+    public JJStackFrame  createJJStackFrame (int max_locals, int max_stack)
     {
-        return new JJStackFrame (diag, rootCells, max_stack, max_locals);
+        return new JJStackFrame (diag, rootCells, max_locals, max_stack);
     }
 
     // instance
