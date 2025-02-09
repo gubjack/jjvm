@@ -652,6 +652,32 @@ class  Engine
         }
     }
 
+    private void  invokespecial (JJClass c, JJMethod m, JJStackFrame sfLast)
+        throws JJvmException, IOException
+    {
+        if (diag != null)
+            diag. out ("invokespecial " + c + "#" + m + " " + sfLast);
+        JJAttributeCode  ac = m. attributeCode ();
+        JJCode  code = ac. code();
+        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
+                                                            , ac.max_stack))
+        {
+            // Feed locals
+            {
+                sf. seto (0, sfLast. popo (thread));    // this
+                thread. o = null;
+            }
+            for (int  i = m.params - 1;  i >= 0;  --i)
+                sf. set (i + 1, sfLast. pop ());
+
+            execute (c, code, sf);
+
+            // Retrieve result
+            if (m.results == 1)
+                sfLast. push (sf. pop ());
+        }
+    }
+
     private void  invokestatic (JJClass c, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
     {
@@ -726,32 +752,6 @@ class  Engine
         // Retrieve result
         if (m.results == 1)
             sfLast. push ((Integer) result);
-    }
-
-    private void  invokespecial (JJClass c, JJMethod m, JJStackFrame sfLast)
-        throws JJvmException, IOException
-    {
-        if (diag != null)
-            diag. out ("invokespecial " + c + "#" + m + " " + sfLast);
-        JJAttributeCode  ac = m. attributeCode ();
-        JJCode  code = ac. code();
-        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
-                                                            , ac.max_stack))
-        {
-            // Feed locals
-            {
-                sf. seto (0, sfLast. popo (thread));    // this
-                thread. o = null;
-            }
-            for (int  i = m.params - 1;  i >= 0;  --i)
-                sf. set (i + 1, sfLast. pop ());
-
-            execute (c, code, sf);
-
-            // Retrieve result
-            if (m.results == 1)
-                sfLast. push (sf. pop ());
-        }
     }
 
 }
