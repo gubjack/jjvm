@@ -57,6 +57,7 @@ class  Commands
     final static byte  return_          = (byte) 0xb1;
     final static byte  getstatic        = (byte) 0xb2;
     final static byte  putstatic        = (byte) 0xb3;
+    final static byte  invokevirtual    = (byte) 0xb6;
     final static byte  invokespecial    = (byte) 0xb7;
     final static byte  invokestatic     = (byte) 0xb8;
     final static byte  new_             = (byte) 0xbb;
@@ -117,6 +118,7 @@ class  Commands
             case return_:           return "return";
             case getstatic:         return "getstatic";
             case putstatic:         return "putstatic";
+            case invokevirtual:     return "invokevirtual";
             case invokespecial:     return "invokespecial";
             case invokestatic:      return "invokestatic";
             case new_:              return "new";

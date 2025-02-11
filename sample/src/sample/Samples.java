@@ -18,13 +18,13 @@ class  Samples
 
     public static int  run ()
     {
-        return constants ();
+//        return constants ();
 //        return locals ();
 //        return maths ();
 //        return bits ();
 //        return branching ();
 //        return fields ();
-//        return invocations ();
+        return invocations ();
 //        return instances ();
 
 //        return Fibunacci.straight(9);
@@ -159,11 +159,13 @@ class  Samples
     private static int  invocations ()
     {
         // ..., invokestatic, ...
-        return method ();
+//        return method ();
         // ..., invokestatic (native), ...
 //        println(99);  return 0;
         // ..., invokestatic (other class), ...
 //        Console.println(88);  return 0;
+        // ..., invokevirtual, ...
+        return new Samples (). super_reckon ();
     }
     private static int  method ()
     {

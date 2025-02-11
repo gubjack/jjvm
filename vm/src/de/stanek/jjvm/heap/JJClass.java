@@ -45,7 +45,7 @@ public class  JJClass
     public JJField  field (String name, String descriptor)
         throws JJvmException
     {
-        JJField  f= fields. field (name, descriptor);
+        JJField  f = fields. field (name, descriptor);
         if (f == null)
         {
             if (super_c != null)
@@ -56,6 +56,17 @@ public class  JJClass
         return f;
     }
 
+    public JJMethod  method_virtual (String name, String descriptor)
+        throws JJvmException
+    {
+        JJMethod  m = jjMethods. method (name, descriptor);
+        if (m == null)
+        {
+            if (super_c != null)
+                m = super_c. method (name, descriptor);
+        }
+        return m;
+    }
     public JJMethod  method (String name, String descriptor)
         throws JJvmException
     {

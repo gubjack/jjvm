@@ -550,6 +550,45 @@ class  Engine
                     f. value = sf. pop ();
                     break;
                 }
+                case Commands.invokevirtual:
+                {
+                    JJClass  c;
+                    JJMethod  m;
+                    {
+                        CPMethodRef  mr;
+                        {
+                            short  index = code. nextShort (counter);
+                            counter += 2;
+                            mr = cp. methodref (index);
+                        }
+                        {
+                            String  class_name = cp. className (mr.class_index);
+                            c = loader. load (class_name);
+                            initialize (c);
+                        }
+                        {
+                            String  name;
+                            String  descriptor;
+                            {
+                                CPNameAndType  nt = cp. nameandtype (
+                                                    mr.name_and_type_index);
+                                name = cp. utf8 (nt.name_index);
+                                descriptor = cp. utf8 (nt.descriptor_index);
+                            }
+                            m = c. method_virtual (name, descriptor);
+                            if (m == null)
+                                throw new JJvmException ("Missing method "
+                                                        + name + descriptor);
+                        }
+                    }
+
+                    if (m. isNative ())
+                        throw new JJvmException (
+                                "invokevirtual_native not implemented");
+                    else
+                        invokespecial (c, m, sf);
+                    break;
+                }
                 case Commands.invokespecial:
                 {
                     JJClass  c;
