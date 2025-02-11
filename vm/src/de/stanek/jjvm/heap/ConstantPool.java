@@ -6,12 +6,13 @@ import de.stanek.jjvm.JJvmException;
 public class  ConstantPool
 {
 
-    public final static byte  CONSTANT_Utf8        = 1;
-    public final static byte  CONSTANT_Integer     = 3;
-    public final static byte  CONSTANT_Class       = 7;
-    public final static byte  CONSTANT_FieldRef    = 9;
-    public final static byte  CONSTANT_MethodRef   = 10;
-    public final static byte  CONSTANT_NameAndType = 12;
+    public final static byte  CONSTANT_Utf8                 = 1;
+    public final static byte  CONSTANT_Integer              = 3;
+    public final static byte  CONSTANT_Class                = 7;
+    public final static byte  CONSTANT_FieldRef             = 9;
+    public final static byte  CONSTANT_MethodRef            = 10;
+    public final static byte  CONSTANT_InterfaceMethodRef   = 11;
+    public final static byte  CONSTANT_NameAndType          = 12;
 
     ConstantPool (short constant_pool_count)
     {
@@ -106,6 +107,17 @@ public class  ConstantPool
             throw new JJvmException ("MethodRef expected at " + index);
         CPMethodRef  cpMethodRef = (CPMethodRef) entries [index];
         return cpMethodRef;
+    }
+
+    public CPInterfaceMethodRef  interfacemethodref (int index)
+        throws JJvmException
+    {
+        byte  tag = tags [index];
+        if (tag != ConstantPool.CONSTANT_InterfaceMethodRef)
+            throw new JJvmException ("InterfaceMethodRef expected at " + index);
+        CPInterfaceMethodRef  cpInterfaceMethodRef
+                                    = (CPInterfaceMethodRef) entries [index];
+        return cpInterfaceMethodRef;
     }
 
     public CPNameAndType  nameandtype (int index)

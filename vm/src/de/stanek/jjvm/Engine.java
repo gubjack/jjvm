@@ -9,6 +9,7 @@ import de.stanek.jjvm.heap.JJCode;
 import de.stanek.jjvm.heap.JJField;
 import de.stanek.jjvm.heap.JJInstance;
 import de.stanek.jjvm.heap.CPFieldRef;
+import de.stanek.jjvm.heap.CPInterfaceMethodRef;
 import de.stanek.jjvm.heap.CPMethodRef;
 import de.stanek.jjvm.heap.CPNameAndType;
 import de.stanek.jjvm.heap.ConstantPool;
@@ -86,7 +87,7 @@ class  Engine
                 {
                     try (JJStackFrame  sf = heap. createJJStackFrame (0, 0))
                     {
-                        invokestatic (c, m, sf);
+                        invoke (c, m, sf);
                     }
 // TODO  Handle initialization failure
                 }
@@ -107,7 +108,7 @@ class  Engine
             diag. out ("run " + c + "#" + m);
         try (JJStackFrame  sf = heap. createJJStackFrame (0, 0))
         {
-            invokestatic (c, m, sf);
+            invoke (c, m, sf);
         }
     }
 
@@ -552,6 +553,7 @@ class  Engine
                 }
                 case Commands.invokevirtual:
                 {
+                    JJInstance  o = sf. popo (thread);
                     JJClass  c;
                     JJMethod  m;
                     {
@@ -586,11 +588,12 @@ class  Engine
                         throw new JJvmException (
                                 "invokevirtual_native not implemented");
                     else
-                        invokespecial (c, m, sf);
+                        invoke (c, o, m, sf);
                     break;
                 }
                 case Commands.invokespecial:
                 {
+                    JJInstance  o = sf. popo (thread);
                     JJClass  c;
                     JJMethod  m;
                     {
@@ -625,7 +628,7 @@ class  Engine
                         throw new JJvmException (
                                 "invokespecial_native not implemented");
                     else
-                        invokespecial (c, m, sf);
+                        invoke (c, o, m, sf);
                     break;
                 }
                 case Commands.invokestatic:
@@ -661,9 +664,49 @@ class  Engine
                     }
 
                     if (m. isNative ())
-                        invokestatic_native (c, m, sf);
+                        invoke_native (c, m, sf);
                     else
-                        invokestatic (c, m, sf);
+                        invoke (c, m, sf);
+                    break;
+                }
+                case Commands.invokeinterface:
+                {
+                    JJInstance  o = sf. popo (thread);
+                    JJMethod  m;
+                    {
+                        CPInterfaceMethodRef  mr;
+                        {
+                            short  index = code. nextShort (counter);
+                            counter += 2;
+                            mr = cp. interfacemethodref (index);
+                        }
+                        {
+                            @SuppressWarnings("unused")
+                            short  count = code. nextShort (counter);
+                            counter += 2;
+                        }
+                        {
+                            String  name;
+                            String  descriptor;
+                            {
+                                CPNameAndType  nt = cp. nameandtype (
+                                                    mr.name_and_type_index);
+                                name = cp. utf8 (nt.name_index);
+                                descriptor = cp. utf8 (nt.descriptor_index);
+                            }
+                            JJClass  c = o.c;
+                            m = c. method_virtual (name, descriptor);
+                            if (m == null)
+                                throw new JJvmException ("Missing method "
+                                                        + name + descriptor);
+                        }
+                    }
+
+                    if (m. isNative ())
+                        throw new JJvmException (
+                                "invokeinterface_native not implemented");
+                    else
+                        invoke (o.c, o, m, sf);
                     break;
                 }
                 case Commands.new_:
@@ -689,11 +732,12 @@ class  Engine
         }
     }
 
-    private void  invokespecial (JJClass c, JJMethod m, JJStackFrame sfLast)
+    private void  invoke (JJClass c, JJInstance o, JJMethod m
+                                    , JJStackFrame sfLast)
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invokespecial " + c + "#" + m + " " + sfLast);
+            diag. out ("invoke " + c + "#" + m + " " + sfLast);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
@@ -701,7 +745,7 @@ class  Engine
         {
             // Feed locals
             {
-                sf. seto (0, sfLast. popo (thread));    // this
+                sf. seto (0, o);    // this
                 thread. o = null;
             }
             for (int  i = m.params - 1;  i >= 0;  --i)
@@ -715,7 +759,7 @@ class  Engine
         }
     }
 
-    private void  invokestatic (JJClass c, JJMethod m, JJStackFrame sfLast)
+    private void  invoke (JJClass c, JJMethod m, JJStackFrame sfLast)
         throws JJvmException, IOException
     {
         if (diag != null)
@@ -737,8 +781,7 @@ class  Engine
         }
     }
 
-    private void  invokestatic_native (JJClass c, JJMethod m
-                                        , JJStackFrame sfLast)
+    private void  invoke_native (JJClass c, JJMethod m, JJStackFrame sfLast)
         throws JJvmException
     {
         Object  result;

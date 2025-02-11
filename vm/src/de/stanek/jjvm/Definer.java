@@ -8,6 +8,7 @@ import de.stanek.jjvm.heap.ConstantPool;
 import de.stanek.jjvm.heap.CPClass;
 import de.stanek.jjvm.heap.CPFieldRef;
 import de.stanek.jjvm.heap.CPInteger;
+import de.stanek.jjvm.heap.CPInterfaceMethodRef;
 import de.stanek.jjvm.heap.CPMethodRef;
 import de.stanek.jjvm.heap.CPNameAndType;
 import de.stanek.jjvm.heap.CPUtf8;
@@ -101,6 +102,16 @@ class  Definer
                     short  class_index = dis. readShort ();
                     short  name_and_type_index = dis. readShort ();
                     CPFieldRef  info = heap. createCPFieldRef (
+                                            class_index, name_and_type_index);
+                    cp. set (index, tag, info);
+                    break;
+                }
+                case ConstantPool.CONSTANT_InterfaceMethodRef:
+                {
+                    short  class_index = dis. readShort ();
+                    short  name_and_type_index = dis. readShort ();
+                    CPInterfaceMethodRef  info
+                            = heap. createCPInterfaceMethodRef (
                                             class_index, name_and_type_index);
                     cp. set (index, tag, info);
                     break;

@@ -113,6 +113,12 @@ public class  Heap
     {
         return new CPFieldRef (class_index, name_and_type_index);
     }
+    public CPInterfaceMethodRef  createCPInterfaceMethodRef (
+                                            short class_index
+                                            , short name_and_type_index)
+    {
+        return new CPInterfaceMethodRef (class_index, name_and_type_index);
+    }
     public CPMethodRef  createCPMethodRef (short class_index
                                             , short name_and_type_index)
     {

@@ -10,7 +10,7 @@ public class  JJInstance
         this.c = c;
         this.position = position;
     }
-    private final JJClass  c;
+    public final JJClass  c;
     final int  position;
 
     public String  toString ()

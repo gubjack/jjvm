@@ -60,6 +60,7 @@ class  Commands
     final static byte  invokevirtual    = (byte) 0xb6;
     final static byte  invokespecial    = (byte) 0xb7;
     final static byte  invokestatic     = (byte) 0xb8;
+    final static byte  invokeinterface  = (byte) 0xb9;
     final static byte  new_             = (byte) 0xbb;
 
     static String  cmdToString (byte cmd)
@@ -121,6 +122,7 @@ class  Commands
             case invokevirtual:     return "invokevirtual";
             case invokespecial:     return "invokespecial";
             case invokestatic:      return "invokestatic";
+            case invokeinterface:   return "invokeinterface";
             case new_:              return "new";
             default:
                 return "<command 0x" + Integer.toHexString(cmd & 0xff) + ">";

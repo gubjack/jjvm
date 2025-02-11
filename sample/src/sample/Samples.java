@@ -13,7 +13,7 @@ class  Samples
 
     public int  reckon ()
     {
-        return 0;
+        return 55;
     }
 
     public static int  run ()
@@ -165,11 +165,15 @@ class  Samples
         // ..., invokestatic (other class), ...
 //        Console.println(88);  return 0;
         // ..., invokevirtual, ...
-        return new Samples (). super_reckon ();
+//        return new Samples (). super_reckon ();
+        // ..., invokevirtual, ...
+//        return new Samples (). reckon ();
+        // ..., invokeinterface, ...
+        return ((Face) new Samples ()). reckon ();
     }
     private static int  method ()
     {
-        return 0;
+        return 44;
     }
     private native static void  println (int value);
 
