@@ -763,7 +763,7 @@ class  Engine
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invokestatic " + c + "#" + m);
+            diag. out ("invoke " + c + "#" + m + " " + sfLast);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
@@ -784,6 +784,8 @@ class  Engine
     private void  invoke_native (JJClass c, JJMethod m, JJStackFrame sfLast)
         throws JJvmException
     {
+        if (diag != null)
+            diag. out ("invoke_native " + c + "#" + m + " " + sfLast);
         Object  result;
         {
             Method  method;
