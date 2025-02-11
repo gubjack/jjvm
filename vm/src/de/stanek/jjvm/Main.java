@@ -20,14 +20,12 @@ public class  Main
 
         JVM  jvm = new JVM (diag, bootClasses, appClasses);
 
-        int  result = jvm. executeMain (clazz);
+        jvm. executeMain (clazz);
 
         jvm. cleanup ();
 
         if (diag != null)
             diag. sleep ();
-
-        System.out.println (result);
     }
 
 }

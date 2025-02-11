@@ -5,10 +5,8 @@ package sample;
 public class  Simple
 {
 
-    public static int  main ()
+    public static void  main ()
     {
-        return 0;
-//        return Samples. run ();
     }
 
 }

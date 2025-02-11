@@ -100,16 +100,14 @@ class  Engine
         }
     }
 
-    int  run (JJClass c, JJMethod m)
+    void  run (JJClass c, JJMethod m)
         throws JJvmException, IOException
     {
         if (diag != null)
             diag. out ("run " + c + "#" + m);
-        try (JJStackFrame  sf = heap. createJJStackFrame (0, 1))
+        try (JJStackFrame  sf = heap. createJJStackFrame (0, 0))
         {
             invokestatic (c, m, sf);
-
-            return sf. pop ();
         }
     }
 

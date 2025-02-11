@@ -29,7 +29,7 @@ class  JVM
         engine. cleanup ();
     }
 
-    int  executeMain (String clazz)
+    void  executeMain (String clazz)
         throws JJvmException, IOException
     {
         if (diag != null)
@@ -37,7 +37,7 @@ class  JVM
 
         // main method is at the moment 'public static int main()'
         String  name = "main";
-        String  descriptor = "()I";
+        String  descriptor = "()V";
 
         JJClass  c = loader. load (clazz);
         engine. initialize (c);     // this explicitely is required here
@@ -46,11 +46,11 @@ class  JVM
         if (m == null)
             throw new JJvmException ("Missing method " + name + descriptor);
         int  results = JJDescriptor. results (descriptor);
-        if (results != 1)
+        if (results != 0)
             throw new JJvmException (
-                                "Main method is expected to return a result");
+                            "Main method is not expected to return a result");
 
-        return engine. run (c, m);
+        engine. run (c, m);
     }
 
 }
