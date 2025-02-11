@@ -35,8 +35,8 @@ class  JVM
         if (diag != null)
             diag. out ("executeMain " + clazz);
 
-        // main method is at the moment 'public static int caluclate()'
-        String  name = "calculate";
+        // main method is at the moment 'public static int main()'
+        String  name = "main";
         String  descriptor = "()I";
 
         JJClass  c = loader. load (clazz);
