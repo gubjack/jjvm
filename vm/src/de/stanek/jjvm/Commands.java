@@ -28,6 +28,7 @@ class  Commands
     final static byte  istore_2         = (byte) 0x3d;
     final static byte  istore_3         = (byte) 0x3e;
     final static byte  astore_0         = (byte) 0x4b;
+    final static byte  pop              = (byte) 0x57;
     final static byte  dup              = (byte) 0x59;
     final static byte  iadd             = (byte) 0x60;
     final static byte  isub             = (byte) 0x64;
@@ -90,6 +91,7 @@ class  Commands
             case istore_2:          return "istore_2";
             case istore_3:          return "istore_3";
             case astore_0:          return "astore_0";
+            case pop:               return "pop";
             case dup:               return "dup";
             case iadd:              return "iadd";
             case isub:              return "isub";

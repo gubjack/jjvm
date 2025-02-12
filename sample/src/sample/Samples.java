@@ -24,8 +24,8 @@ class  Samples
 //        return bits ();
 //        return branching ();
 //        return fields ();
-        return invocations ();
-//        return instances ();
+//        return invocations ();
+        return instances ();
 
 //        return Fibunacci.straight(9);
 //        return Fibunacci.recursive(9);
@@ -180,7 +180,9 @@ class  Samples
     private static int  instances ()
     {
         // new, dup, invokespecial, astore_0, ..., nop, return, ..., aload_0
-        Data  d = new Data ();  return 0;
+//        Data  d = new Data ();  return 0;
+        // new, dup, invokespecial, invokevirtual, pop, iconst_0, ireturn
+        new Samples (). reckon ();  return 33;
     }
 
 }

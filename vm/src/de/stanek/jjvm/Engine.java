@@ -267,6 +267,12 @@ class  Engine
                     thread.o = null;
                     break;
                 }
+                case Commands.pop:
+                {
+                    sf. pop (thread);
+                    thread.o = null;
+                    break;
+                }
                 case Commands.dup:
                 {
                     sf. dup ();

@@ -64,6 +64,14 @@ public class  JJStackFrame
         }
     }
 
+    public void  pop (JJThread t)
+    {
+        Cell  c = stack [pointer - 1];
+        if (c.o != null)
+            popo (t);
+        else
+            popi ();
+    }
     public void  dup ()
     {
         Cell  c = stack [pointer - 1];
