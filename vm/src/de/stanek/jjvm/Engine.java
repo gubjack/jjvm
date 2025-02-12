@@ -135,51 +135,51 @@ class  Engine
                 }
                 case Commands.iconst_m1:
                 {
-                    sf. push (-1);
+                    sf. pushi (-1);
                     break;
                 }
                 case Commands.iconst_0:
                 {
-                    sf. push (0);
+                    sf. pushi (0);
                     break;
                 }
                 case Commands.iconst_1:
                 {
-                    sf. push (1);
+                    sf. pushi (1);
                     break;
                 }
                 case Commands.iconst_2:
                 {
-                    sf. push (2);
+                    sf. pushi (2);
                     break;
                 }
                 case Commands.iconst_3:
                 {
-                    sf. push (3);
+                    sf. pushi (3);
                     break;
                 }
                 case Commands.iconst_4:
                 {
-                    sf. push (4);
+                    sf. pushi (4);
                     break;
                 }
                 case Commands.iconst_5:
                 {
-                    sf. push (5);
+                    sf. pushi (5);
                     break;
                 }
                 case Commands.bipush:
                 {
                     ++counter;
                     byte  value = code. peek (counter);
-                    sf. push (value);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.sipush:
                 {
                     short  value = code. nextShort (counter);
                     counter += 2;
-                    sf. push (value);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.ldc:
@@ -187,39 +187,39 @@ class  Engine
                     ++counter;
                     byte  index = code. peek (counter);
                     int  value = cp. integer (index);
-                    sf. push (value);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.iload:
                 {
                     ++counter;
                     byte  index = code. peek (counter);
-                    int  value = sf. get (index);
-                    sf. push (value);
+                    int  value = sf. geti (index);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.iload_0:
                 {
-                    int  value = sf. get (0);
-                    sf. push (value);
+                    int  value = sf. geti (0);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.iload_1:
                 {
-                    int  value = sf. get (1);
-                    sf. push (value);
+                    int  value = sf. geti (1);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.iload_2:
                 {
-                    int  value = sf. get (2);
-                    sf. push (value);
+                    int  value = sf. geti (2);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.iload_3:
                 {
-                    int  value = sf. get (3);
-                    sf. push (value);
+                    int  value = sf. geti (3);
+                    sf. pushi (value);
                     break;
                 }
                 case Commands.aload_0:
@@ -232,32 +232,32 @@ class  Engine
                 {
                     ++counter;
                     byte  index = code. peek (counter);
-                    int  value = sf. pop ();
-                    sf. set (index, value);
+                    int  value = sf. popi ();
+                    sf. seti (index, value);
                     break;
                 }
                 case Commands.istore_0:
                 {
-                    int  value = sf. pop ();
-                    sf. set (0, value);
+                    int  value = sf. popi ();
+                    sf. seti (0, value);
                     break;
                 }
                 case Commands.istore_1:
                 {
-                    int  value = sf. pop ();
-                    sf. set (1, value);
+                    int  value = sf. popi ();
+                    sf. seti (1, value);
                     break;
                 }
                 case Commands.istore_2:
                 {
-                    int  value = sf. pop ();
-                    sf. set (2, value);
+                    int  value = sf. popi ();
+                    sf. seti (2, value);
                     break;
                 }
                 case Commands.istore_3:
                 {
-                    int  value = sf. pop ();
-                    sf. set (3, value);
+                    int  value = sf. popi ();
+                    sf. seti (3, value);
                     break;
                 }
                 case Commands.astore_0:
@@ -274,81 +274,81 @@ class  Engine
                 }
                 case Commands.iadd:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 + value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.isub:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 - value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.imul:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 * value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.ineg:
                 {
-                    int  value = sf. pop ();
+                    int  value = sf. popi ();
                     int  result = -value;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.ishl:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 << value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.ishr:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 >> value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.iushr:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 >>> value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.iand:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 & value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.ior:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 | value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.ixor:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     int  result = value1 ^ value2;
-                    sf. push (result);
+                    sf. pushi (result);
                     break;
                 }
                 case Commands.iinc:
@@ -357,14 +357,14 @@ class  Engine
                     byte  index = code. peek (counter);
                     ++counter;
                     byte  const_ = code. peek (counter);
-                    int  value = sf. get (index);
+                    int  value = sf. geti (index);
                     value += const_;
-                    sf. set (index, value);
+                    sf. seti (index, value);
                     break;
                 }
                 case Commands.ifeq:
                 {
-                    int  value = sf. pop ();
+                    int  value = sf. popi ();
                     if (value == 0)
                         counter = code. branch (counter);
                     else
@@ -373,7 +373,7 @@ class  Engine
                 }
                 case Commands.ifne:
                 {
-                    int  value = sf. pop ();
+                    int  value = sf. popi ();
                     if (value != 0)
                         counter = code. branch (counter);
                     else
@@ -382,7 +382,7 @@ class  Engine
                 }
                 case Commands.iflt:
                 {
-                    int  value = sf. pop ();
+                    int  value = sf. popi ();
                     if (value < 0)
                         counter = code. branch (counter);
                     else
@@ -391,7 +391,7 @@ class  Engine
                 }
                 case Commands.ifge:
                 {
-                    int  value = sf. pop ();
+                    int  value = sf. popi ();
                     if (value >= 0)
                         counter = code. branch (counter);
                     else
@@ -400,7 +400,7 @@ class  Engine
                 }
                 case Commands.ifgt:
                 {
-                    int  value = sf. pop ();
+                    int  value = sf. popi ();
                     if (value > 0)
                         counter = code. branch (counter);
                     else
@@ -409,7 +409,7 @@ class  Engine
                 }
                 case Commands.ifle:
                 {
-                    int  value = sf. pop ();
+                    int  value = sf. popi ();
                     if (value <= 0)
                         counter = code. branch (counter);
                     else
@@ -418,8 +418,8 @@ class  Engine
                 }
                 case Commands.if_icmpeq:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     if (value1 == value2)
                         counter = code. branch (counter);
                     else
@@ -428,8 +428,8 @@ class  Engine
                 }
                 case Commands.if_icmpne:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     if (value1 != value2)
                         counter = code. branch (counter);
                     else
@@ -438,8 +438,8 @@ class  Engine
                 }
                 case Commands.if_icmplt:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     if (value1 < value2)
                         counter = code. branch (counter);
                     else
@@ -448,8 +448,8 @@ class  Engine
                 }
                 case Commands.if_icmpge:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     if (value1 >= value2)
                         counter = code. branch (counter);
                     else
@@ -458,8 +458,8 @@ class  Engine
                 }
                 case Commands.if_icmpgt:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     if (value1 > value2)
                         counter = code. branch (counter);
                     else
@@ -468,8 +468,8 @@ class  Engine
                 }
                 case Commands.if_icmple:
                 {
-                    int  value2 = sf. pop ();
-                    int  value1 = sf. pop ();
+                    int  value2 = sf. popi ();
+                    int  value1 = sf. popi ();
                     if (value1 <= value2)
                         counter = code. branch (counter);
                     else
@@ -517,7 +517,7 @@ class  Engine
                             f = c. field (name, descriptor);
                         }
                     }
-                    sf. push (f.value);
+                    sf. pushi (f.value);
                     break;
                 }
                 case Commands.putstatic:
@@ -548,7 +548,7 @@ class  Engine
                             f = c. field (name, descriptor);
                         }
                     }
-                    f. value = sf. pop ();
+                    f. value = sf. popi ();
                     break;
                 }
                 case Commands.invokevirtual:
@@ -749,13 +749,13 @@ class  Engine
                 thread. o = null;
             }
             for (int  i = m.params - 1;  i >= 0;  --i)
-                sf. set (i + 1, sfLast. pop ());
+                sf. seti (i + 1, sfLast. popi ());
 
             execute (c, code, sf);
 
             // Retrieve result
             if (m.results == 1)
-                sfLast. push (sf. pop ());
+                sfLast. pushi (sf. popi ());
         }
     }
 
@@ -771,13 +771,13 @@ class  Engine
         {
             // Feed locals
             for (int  i = m.params - 1;  i >= 0;  --i)
-                sf. set (i, sfLast. pop ());
+                sf. seti (i, sfLast. popi ());
 
             execute (c, code, sf);
 
             // Retrieve result
             if (m.results == 1)
-                sfLast. push (sf. pop ());
+                sfLast. pushi (sf. popi ());
         }
     }
 
@@ -820,7 +820,7 @@ class  Engine
             // Feed params
             Object[]  values = new Integer [m. params];
             for (int  i = m. params - 1;  i >= 0;  --i)
-                values [i] = sfLast. pop ();
+                values [i] = sfLast. popi ();
 
             try {
                 result = method. invoke (null, values);
@@ -833,7 +833,7 @@ class  Engine
 
         // Retrieve result
         if (m.results == 1)
-            sfLast. push ((Integer) result);
+            sfLast. pushi ((Integer) result);
     }
 
 }

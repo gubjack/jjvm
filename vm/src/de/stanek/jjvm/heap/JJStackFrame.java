@@ -70,24 +70,24 @@ public class  JJStackFrame
         if (c.o != null)
             pusho (c.o);
         else
-            push (c.i);
+            pushi (c.i);
     }
 
-    public void  push (int value)
+    public void  pushi (int value)
     {
         Cell  c = stack [pointer++];
         c. i = value;
         c. o = null;    // indicates the cell to be an integer value
     }
-    public int  pop ()
+    public int  popi ()
     {
         return stack [--pointer]. i;
     }
-    public void  set (int index, int value)
+    public void  seti (int index, int value)
     {
         locals [index]. i = value;
     }
-    public int  get (int index)
+    public int  geti (int index)
     {
         return locals [index]. i;
     }
