@@ -274,7 +274,6 @@ class  Engine
                 case Commands.pop:
                 {
                     sf. pop (thread);
-                    thread.o = null;
                     break;
                 }
                 case Commands.dup:
@@ -730,8 +729,7 @@ class  Engine
                         initialize (c);
                     }
                     JJInstance  instance = heap. createJJInstance (c, thread);
-                    sf. pusho (instance);
-                    thread.o = null;
+                    sf. pusho (instance, thread);
                     break;
                 }
                 default:

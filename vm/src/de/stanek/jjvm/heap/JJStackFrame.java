@@ -68,7 +68,10 @@ public class  JJStackFrame
     {
         Cell  c = stack [pointer - 1];
         if (c.o != null)
+        {
             popo (t);
+            t.o = null;
+        }
         else
             popi ();
     }
@@ -100,6 +103,11 @@ public class  JJStackFrame
         return locals [index]. i;
     }
 
+    public void  pusho (JJInstance value, JJThread t)
+    {
+        pusho (value);
+        t. o = null;
+    }
     public void  pusho (JJInstance value)
     {
         Cell  c = stack [pointer++];
