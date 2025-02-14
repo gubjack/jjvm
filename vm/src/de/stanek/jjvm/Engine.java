@@ -746,8 +746,8 @@ class  Engine
     {
         if (diag != null)
             diag. out ("invoke " + c + "#" + o + "." + m + " " + sfLast);
+
         JJAttributeCode  ac = m. attributeCode ();
-        JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
                                                             , ac.max_stack))
         {
@@ -756,7 +756,11 @@ class  Engine
             for (int  i = m.params - 1;  i >= 0;  --i)
                 sf. seti (i + 1, sfLast. popi ());
 
-            execute (c, code, sf);
+            // Invoke the method
+            {
+                JJCode  code = ac. code();
+                execute (c, code, sf);
+            }
 
             // Retrieve result
             if (m.results == 1)
@@ -769,8 +773,8 @@ class  Engine
     {
         if (diag != null)
             diag. out ("invoke " + c + "." + m + " " + sfLast);
+
         JJAttributeCode  ac = m. attributeCode ();
-        JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
                                                             , ac.max_stack))
         {
@@ -778,7 +782,11 @@ class  Engine
             for (int  i = m.params - 1;  i >= 0;  --i)
                 sf. seti (i, sfLast. popi ());
 
-            execute (c, code, sf);
+            // Invoke the method
+            {
+                JJCode  code = ac. code();
+                execute (c, code, sf);
+            }
 
             // Retrieve result
             if (m.results == 1)
@@ -791,10 +799,12 @@ class  Engine
     {
         if (diag != null)
             diag. out ("invoke_native " + c + "#" + m + " " + sfLast);
+
         Object  result;
         {
             Method  method;
             {
+                // Load native class code
                 Class<?> clazz;
                 {
                     String  name = "de.stanek.jjvm.natives."
@@ -808,10 +818,12 @@ class  Engine
                     }
                 }
 
+                // Prepare parameter types (actually the descriptor)
                 Class<?>[]  types = new Class<?> [m. params];
                 for (int  i = m. params - 1;  i >= 0;  --i)
                     types [i] = int.class;
 
+                // Provide access to native method+descriptor
                 try
                 {
                     method = clazz. getMethod (m. name, types);
@@ -827,7 +839,9 @@ class  Engine
             for (int  i = m. params - 1;  i >= 0;  --i)
                 values [i] = sfLast. popi ();
 
-            try {
+            // Call native method
+            try
+            {
                 result = method. invoke (null, values);
             }
             catch (IllegalAccessException | InvocationTargetException e)
