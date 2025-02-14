@@ -268,8 +268,7 @@ class  Engine
                 case Commands.astore_0:
                 {
                     JJInstance  o = sf. popo (thread);
-                    sf. seto (0, o);
-                    thread.o = null;
+                    sf. seto (0, o, thread);
                     break;
                 }
                 case Commands.pop:
@@ -755,10 +754,7 @@ class  Engine
                                                             , ac.max_stack))
         {
             // Feed locals
-            {
-                sf. seto (0, o);    // this
-                thread. o = null;
-            }
+            sf. seto (0, o, thread);    // this
             for (int  i = m.params - 1;  i >= 0;  --i)
                 sf. seti (i + 1, sfLast. popi ());
 

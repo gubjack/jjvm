@@ -118,17 +118,19 @@ public class  JJStackFrame
         }
         return o;
     }
-    public void  seto (int index, JJInstance value)
+    public void  seto (int index, JJInstance value, JJThread t)
     {
         Cell  c = locals [index];
         JJInstance  o = c. o;
-        if (o == value)
-            return;
-        if (o != null  &&  value == null)
-            rootCells. remove (c);
-        c. o = value;
-        if (value != null  &&  o == null)
-            rootCells. add (c);
+        if (o != value)
+        {
+            if (o != null  &&  value == null)
+                rootCells. remove (c);
+            c. o = value;
+            if (value != null  &&  o == null)
+                rootCells. add (c);
+        }
+        t. o = null;
     }
     public JJInstance  geto (int index)
     {
