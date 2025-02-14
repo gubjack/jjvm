@@ -85,7 +85,10 @@ class  Engine
                 JJMethod  m = c. method ("<clinit>", "()V");
                 if (m != null)
                 {
-                    try (JJStackFrame  sf = heap. createJJStackFrame (0, 0))
+                    JJAttributeCode  ac = m. attributeCode ();
+                    try (JJStackFrame  sf = heap. createJJStackFrame (
+                                                            ac.max_locals
+                                                            , ac.max_stack))
                     {
                         invoke (c, m, sf);
                     }
@@ -106,7 +109,9 @@ class  Engine
     {
         if (diag != null)
             diag. out ("run " + c + "#" + m);
-        try (JJStackFrame  sf = heap. createJJStackFrame (0, 0))
+        JJAttributeCode  ac = m. attributeCode ();
+        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
+                                                            , ac.max_stack))
         {
             invoke (c, m, sf);
         }
