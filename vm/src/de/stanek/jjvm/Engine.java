@@ -745,7 +745,7 @@ class  Engine
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invoke " + c + "#" + m + " " + sfLast);
+            diag. out ("invoke " + c + "#" + o + "." + m + " " + sfLast);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
@@ -768,7 +768,7 @@ class  Engine
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invoke " + c + "#" + m + " " + sfLast);
+            diag. out ("invoke " + c + "." + m + " " + sfLast);
         JJAttributeCode  ac = m. attributeCode ();
         JJCode  code = ac. code();
         try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
