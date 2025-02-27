@@ -68,7 +68,7 @@ public class  Heap
         }
         synchronized (rootCells)
         {
-            for (JJStackFrame.Cell  c: rootCells)
+            for (JJFrame.Cell  c: rootCells)
             {
                 JJInstance  o = c.o;
                 instances2 [o.position] = o;
@@ -202,9 +202,9 @@ public class  Heap
     }
 
     // stack frame
-    public JJStackFrame  createJJStackFrame (int max_locals, int max_stack)
+    public JJFrame  createJJFrame (int max_locals, int max_stack)
     {
-        return new JJStackFrame (diag, rootCells, max_locals, max_stack);
+        return new JJFrame (diag, rootCells, max_locals, max_stack);
     }
 
     // instance

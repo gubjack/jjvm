@@ -4,12 +4,11 @@ package  de.stanek.jjvm.heap;
 import de.stanek.jjvm.Diagnose;
 
 
-public class  JJStackFrame
+public class  JJFrame
     implements AutoCloseable
 {
 
-    JJStackFrame (Diagnose diag, RootCells rootCells
-                    , int max_locals, int max_stack)
+    JJFrame (Diagnose diag, RootCells rootCells, int max_locals, int max_stack)
     {
         this.diag = diag;
         this.rootCells = rootCells;

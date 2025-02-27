@@ -17,7 +17,7 @@ import de.stanek.jjvm.heap.Heap;
 import de.stanek.jjvm.heap.JJAttributeCode;
 import de.stanek.jjvm.heap.JJClass;
 import de.stanek.jjvm.heap.JJMethod;
-import de.stanek.jjvm.heap.JJStackFrame;
+import de.stanek.jjvm.heap.JJFrame;
 import de.stanek.jjvm.heap.JJThread;
 
 
@@ -86,11 +86,10 @@ class  Engine
                 if (m != null)
                 {
                     JJAttributeCode  ac = m. attributeCode ();
-                    try (JJStackFrame  sf = heap. createJJStackFrame (
-                                                            ac.max_locals
-                                                            , ac.max_stack))
+                    try (JJFrame  frame = heap. createJJFrame (ac.max_locals
+                                                                , ac.max_stack))
                     {
-                        invoke (c, m, sf);
+                        invoke (c, m, frame);
                     }
 // TODO  Handle initialization failure
                 }
@@ -110,18 +109,17 @@ class  Engine
         if (diag != null)
             diag. out ("run " + c + "#" + m);
         JJAttributeCode  ac = m. attributeCode ();
-        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
-                                                            , ac.max_stack))
+        try (JJFrame  frame = heap. createJJFrame (ac.max_locals, ac.max_stack))
         {
-            invoke (c, m, sf);
+            invoke (c, m, frame);
         }
     }
 
-    private void  execute (JJClass jjClass, JJCode code, JJStackFrame sf)
+    private void  execute (JJClass jjClass, JJCode code, JJFrame frame)
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("execute " + jjClass + " " + sf);
+            diag. out ("execute " + jjClass + " " + frame);
         ConstantPool  cp = jjClass. cp;
 
         for (int counter = 0;  ;  ++counter)
@@ -130,7 +128,8 @@ class  Engine
             if (diag != null)
             {
                 diag. sleep ();
-                diag. out ("execute " + sf + " " + Commands. cmdToString (cmd));
+                diag. out ("execute " + frame
+                                        + " " + Commands. cmdToString (cmd));
             }
             switch (cmd)
             {
@@ -140,51 +139,51 @@ class  Engine
                 }
                 case Commands.iconst_m1:
                 {
-                    sf. pushi (-1);
+                    frame. pushi (-1);
                     break;
                 }
                 case Commands.iconst_0:
                 {
-                    sf. pushi (0);
+                    frame. pushi (0);
                     break;
                 }
                 case Commands.iconst_1:
                 {
-                    sf. pushi (1);
+                    frame. pushi (1);
                     break;
                 }
                 case Commands.iconst_2:
                 {
-                    sf. pushi (2);
+                    frame. pushi (2);
                     break;
                 }
                 case Commands.iconst_3:
                 {
-                    sf. pushi (3);
+                    frame. pushi (3);
                     break;
                 }
                 case Commands.iconst_4:
                 {
-                    sf. pushi (4);
+                    frame. pushi (4);
                     break;
                 }
                 case Commands.iconst_5:
                 {
-                    sf. pushi (5);
+                    frame. pushi (5);
                     break;
                 }
                 case Commands.bipush:
                 {
                     ++counter;
                     byte  value = code. peek (counter);
-                    sf. pushi (value);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.sipush:
                 {
                     short  value = code. nextShort (counter);
                     counter += 2;
-                    sf. pushi (value);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.ldc:
@@ -192,172 +191,172 @@ class  Engine
                     ++counter;
                     byte  index = code. peek (counter);
                     int  value = cp. integer (index);
-                    sf. pushi (value);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.iload:
                 {
                     ++counter;
                     byte  index = code. peek (counter);
-                    int  value = sf. geti (index);
-                    sf. pushi (value);
+                    int  value = frame. geti (index);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.iload_0:
                 {
-                    int  value = sf. geti (0);
-                    sf. pushi (value);
+                    int  value = frame. geti (0);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.iload_1:
                 {
-                    int  value = sf. geti (1);
-                    sf. pushi (value);
+                    int  value = frame. geti (1);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.iload_2:
                 {
-                    int  value = sf. geti (2);
-                    sf. pushi (value);
+                    int  value = frame. geti (2);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.iload_3:
                 {
-                    int  value = sf. geti (3);
-                    sf. pushi (value);
+                    int  value = frame. geti (3);
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.aload_0:
                 {
-                    JJInstance  o = sf. geto(0);
-                    sf. pusho (o);
+                    JJInstance  o = frame. geto(0);
+                    frame. pusho (o);
                     break;
                 }
                 case Commands.istore:
                 {
                     ++counter;
                     byte  index = code. peek (counter);
-                    int  value = sf. popi ();
-                    sf. seti (index, value);
+                    int  value = frame. popi ();
+                    frame. seti (index, value);
                     break;
                 }
                 case Commands.istore_0:
                 {
-                    int  value = sf. popi ();
-                    sf. seti (0, value);
+                    int  value = frame. popi ();
+                    frame. seti (0, value);
                     break;
                 }
                 case Commands.istore_1:
                 {
-                    int  value = sf. popi ();
-                    sf. seti (1, value);
+                    int  value = frame. popi ();
+                    frame. seti (1, value);
                     break;
                 }
                 case Commands.istore_2:
                 {
-                    int  value = sf. popi ();
-                    sf. seti (2, value);
+                    int  value = frame. popi ();
+                    frame. seti (2, value);
                     break;
                 }
                 case Commands.istore_3:
                 {
-                    int  value = sf. popi ();
-                    sf. seti (3, value);
+                    int  value = frame. popi ();
+                    frame. seti (3, value);
                     break;
                 }
                 case Commands.astore_0:
                 {
-                    JJInstance  o = sf. popo (thread);
-                    sf. seto (0, o, thread);
+                    JJInstance  o = frame. popo (thread);
+                    frame. seto (0, o, thread);
                     break;
                 }
                 case Commands.pop:
                 {
-                    sf. pop (thread);
+                    frame. pop (thread);
                     break;
                 }
                 case Commands.dup:
                 {
-                    sf. dup ();
+                    frame. dup ();
                     break;
                 }
                 case Commands.iadd:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 + value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.isub:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 - value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.imul:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 * value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.ineg:
                 {
-                    int  value = sf. popi ();
+                    int  value = frame. popi ();
                     int  result = -value;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.ishl:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 << value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.ishr:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 >> value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.iushr:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 >>> value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.iand:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 & value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.ior:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 | value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.ixor:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     int  result = value1 ^ value2;
-                    sf. pushi (result);
+                    frame. pushi (result);
                     break;
                 }
                 case Commands.iinc:
@@ -366,14 +365,14 @@ class  Engine
                     byte  index = code. peek (counter);
                     ++counter;
                     byte  const_ = code. peek (counter);
-                    int  value = sf. geti (index);
+                    int  value = frame. geti (index);
                     value += const_;
-                    sf. seti (index, value);
+                    frame. seti (index, value);
                     break;
                 }
                 case Commands.ifeq:
                 {
-                    int  value = sf. popi ();
+                    int  value = frame. popi ();
                     if (value == 0)
                         counter = code. branch (counter);
                     else
@@ -382,7 +381,7 @@ class  Engine
                 }
                 case Commands.ifne:
                 {
-                    int  value = sf. popi ();
+                    int  value = frame. popi ();
                     if (value != 0)
                         counter = code. branch (counter);
                     else
@@ -391,7 +390,7 @@ class  Engine
                 }
                 case Commands.iflt:
                 {
-                    int  value = sf. popi ();
+                    int  value = frame. popi ();
                     if (value < 0)
                         counter = code. branch (counter);
                     else
@@ -400,7 +399,7 @@ class  Engine
                 }
                 case Commands.ifge:
                 {
-                    int  value = sf. popi ();
+                    int  value = frame. popi ();
                     if (value >= 0)
                         counter = code. branch (counter);
                     else
@@ -409,7 +408,7 @@ class  Engine
                 }
                 case Commands.ifgt:
                 {
-                    int  value = sf. popi ();
+                    int  value = frame. popi ();
                     if (value > 0)
                         counter = code. branch (counter);
                     else
@@ -418,7 +417,7 @@ class  Engine
                 }
                 case Commands.ifle:
                 {
-                    int  value = sf. popi ();
+                    int  value = frame. popi ();
                     if (value <= 0)
                         counter = code. branch (counter);
                     else
@@ -427,8 +426,8 @@ class  Engine
                 }
                 case Commands.if_icmpeq:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     if (value1 == value2)
                         counter = code. branch (counter);
                     else
@@ -437,8 +436,8 @@ class  Engine
                 }
                 case Commands.if_icmpne:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     if (value1 != value2)
                         counter = code. branch (counter);
                     else
@@ -447,8 +446,8 @@ class  Engine
                 }
                 case Commands.if_icmplt:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     if (value1 < value2)
                         counter = code. branch (counter);
                     else
@@ -457,8 +456,8 @@ class  Engine
                 }
                 case Commands.if_icmpge:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     if (value1 >= value2)
                         counter = code. branch (counter);
                     else
@@ -467,8 +466,8 @@ class  Engine
                 }
                 case Commands.if_icmpgt:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     if (value1 > value2)
                         counter = code. branch (counter);
                     else
@@ -477,8 +476,8 @@ class  Engine
                 }
                 case Commands.if_icmple:
                 {
-                    int  value2 = sf. popi ();
-                    int  value1 = sf. popi ();
+                    int  value2 = frame. popi ();
+                    int  value1 = frame. popi ();
                     if (value1 <= value2)
                         counter = code. branch (counter);
                     else
@@ -526,7 +525,7 @@ class  Engine
                             f = c. field (name, descriptor);
                         }
                     }
-                    sf. pushi (f.value);
+                    frame. pushi (f.value);
                     break;
                 }
                 case Commands.putstatic:
@@ -557,12 +556,12 @@ class  Engine
                             f = c. field (name, descriptor);
                         }
                     }
-                    f. value = sf. popi ();
+                    f. value = frame. popi ();
                     break;
                 }
                 case Commands.invokevirtual:
                 {
-                    JJInstance  o = sf. popo (thread);
+                    JJInstance  o = frame. popo (thread);
                     JJClass  c;
                     JJMethod  m;
                     {
@@ -597,12 +596,12 @@ class  Engine
                         throw new JJvmException (
                                 "invokevirtual_native not implemented");
                     else
-                        invoke (c, o, m, sf);
+                        invoke (c, o, m, frame);
                     break;
                 }
                 case Commands.invokespecial:
                 {
-                    JJInstance  o = sf. popo (thread);
+                    JJInstance  o = frame. popo (thread);
                     JJClass  c;
                     JJMethod  m;
                     {
@@ -637,7 +636,7 @@ class  Engine
                         throw new JJvmException (
                                 "invokespecial_native not implemented");
                     else
-                        invoke (c, o, m, sf);
+                        invoke (c, o, m, frame);
                     break;
                 }
                 case Commands.invokestatic:
@@ -673,14 +672,14 @@ class  Engine
                     }
 
                     if (m. isNative ())
-                        invoke_native (c, m, sf);
+                        invoke_native (c, m, frame);
                     else
-                        invoke (c, m, sf);
+                        invoke (c, m, frame);
                     break;
                 }
                 case Commands.invokeinterface:
                 {
-                    JJInstance  o = sf. popo (thread);
+                    JJInstance  o = frame. popo (thread);
                     JJMethod  m;
                     {
                         CPInterfaceMethodRef  mr;
@@ -715,7 +714,7 @@ class  Engine
                         throw new JJvmException (
                                 "invokeinterface_native not implemented");
                     else
-                        invoke (o.c, o, m, sf);
+                        invoke (o.c, o, m, frame);
                     break;
                 }
                 case Commands.new_:
@@ -729,7 +728,7 @@ class  Engine
                         initialize (c);
                     }
                     JJInstance  instance = heap. createJJInstance (c, thread);
-                    sf. pusho (instance, thread);
+                    frame. pusho (instance, thread);
                     break;
                 }
                 default:
@@ -741,64 +740,62 @@ class  Engine
     }
 
     private void  invoke (JJClass c, JJInstance o, JJMethod m
-                                    , JJStackFrame sfLast)
+                            , JJFrame frameLast)
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invoke " + c + "#" + o + "." + m + " " + sfLast);
+            diag. out ("invoke " + c + "#" + o + "." + m + " " + frameLast);
 
         JJAttributeCode  ac = m. attributeCode ();
-        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
-                                                            , ac.max_stack))
+        try (JJFrame  frame = heap. createJJFrame (ac.max_locals, ac.max_stack))
         {
             // Feed locals
-            sf. seto (0, o, thread);    // this
+            frame. seto (0, o, thread);    // this
             for (int  i = m.params - 1;  i >= 0;  --i)
-                sf. seti (i + 1, sfLast. popi ());
+                frame. seti (i + 1, frameLast. popi ());
 
             // Invoke the method
             {
                 JJCode  code = ac. code();
-                execute (c, code, sf);
+                execute (c, code, frame);
             }
 
             // Retrieve result
             if (m.results == 1)
-                sfLast. pushi (sf. popi ());
+                frameLast. pushi (frame. popi ());
         }
     }
 
-    private void  invoke (JJClass c, JJMethod m, JJStackFrame sfLast)
+    private void  invoke (JJClass c, JJMethod m, JJFrame frameLast)
         throws JJvmException, IOException
     {
         if (diag != null)
-            diag. out ("invoke " + c + "." + m + " " + sfLast);
+            diag. out ("invoke " + c + "." + m + " " + frameLast);
 
         JJAttributeCode  ac = m. attributeCode ();
-        try (JJStackFrame  sf = heap. createJJStackFrame (ac.max_locals
-                                                            , ac.max_stack))
+        try (JJFrame  frame = heap. createJJFrame (ac.max_locals, ac.max_stack))
         {
             // Feed locals
             for (int  i = m.params - 1;  i >= 0;  --i)
-                sf. seti (i, sfLast. popi ());
+                frame. seti (i, frameLast. popi ());
 
             // Invoke the method
             {
                 JJCode  code = ac. code();
-                execute (c, code, sf);
+                execute (c, code, frame);
             }
 
             // Retrieve result
             if (m.results == 1)
-                sfLast. pushi (sf. popi ());
+                frameLast. pushi (frame. popi ());
         }
     }
 
-    private void  invoke_native (JJClass c, JJMethod m, JJStackFrame sfLast)
+    private void  invoke_native (JJClass c, JJMethod m, JJFrame frameLast)
         throws JJvmException
     {
         if (diag != null)
-            diag. out ("invoke_native " + c + "#" + m + " " + sfLast);
+            diag. out ("invoke_native " + c + "#" + m + " " + frameLast);
 
         Object  result;
         {
@@ -837,7 +834,7 @@ class  Engine
             // Feed params
             Object[]  values = new Integer [m. params];
             for (int  i = m. params - 1;  i >= 0;  --i)
-                values [i] = sfLast. popi ();
+                values [i] = frameLast. popi ();
 
             // Call native method
             try
@@ -852,7 +849,7 @@ class  Engine
 
         // Retrieve result
         if (m.results == 1)
-            sfLast. pushi ((Integer) result);
+            frameLast. pushi ((Integer) result);
     }
 
 }
