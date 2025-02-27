@@ -120,7 +120,7 @@ class  Engine
     {
         if (diag != null)
             diag. out ("execute " + jjClass + " " + frame);
-        ConstantPool  cp = jjClass. cp;
+        ConstantPool  pool = jjClass. cp;
 
         for (int counter = 0;  ;  ++counter)
         {
@@ -190,7 +190,7 @@ class  Engine
                 {
                     ++counter;
                     byte  index = code. peek (counter);
-                    int  value = cp. integer (index);
+                    int  value = pool. integer (index);
                     frame. pushi (value);
                     break;
                 }
@@ -506,10 +506,11 @@ class  Engine
                         {
                             short  index = code. nextShort (counter);
                             counter += 2;
-                            fr = cp. fieldref (index);
+                            fr = pool. fieldref (index);
                         }
                         {
-                            String  class_name = cp. className (fr.class_index);
+                            String  class_name = pool. className (
+                                                                fr.class_index);
                             c = loader. load (class_name);
                             initialize (c);
                         }
@@ -517,10 +518,10 @@ class  Engine
                             String  name;
                             String  descriptor;
                             {
-                                CPNameAndType  nt = cp. nameandtype (
-                                                    fr.name_and_type_index);
-                                name = cp. utf8 (nt.name_index);
-                                descriptor = cp. utf8 (nt.descriptor_index);
+                                CPNameAndType  nt = pool. nameandtype (
+                                                        fr.name_and_type_index);
+                                name = pool. utf8 (nt.name_index);
+                                descriptor = pool. utf8 (nt.descriptor_index);
                             }
                             f = c. field (name, descriptor);
                         }
@@ -537,10 +538,11 @@ class  Engine
                         {
                             short  index = code. nextShort (counter);
                             counter += 2;
-                            fr = cp. fieldref (index);
+                            fr = pool. fieldref (index);
                         }
                         {
-                            String  class_name = cp. className (fr.class_index);
+                            String  class_name = pool. className (
+                                                                fr.class_index);
                             c = loader. load (class_name);
                             initialize (c);
                         }
@@ -548,10 +550,10 @@ class  Engine
                             String  name;
                             String  descriptor;
                             {
-                                CPNameAndType  nt = cp. nameandtype (
-                                                    fr.name_and_type_index);
-                                name = cp. utf8 (nt.name_index);
-                                descriptor = cp. utf8 (nt.descriptor_index);
+                                CPNameAndType  nt = pool. nameandtype (
+                                                        fr.name_and_type_index);
+                                name = pool. utf8 (nt.name_index);
+                                descriptor = pool. utf8 (nt.descriptor_index);
                             }
                             f = c. field (name, descriptor);
                         }
@@ -569,10 +571,11 @@ class  Engine
                         {
                             short  index = code. nextShort (counter);
                             counter += 2;
-                            mr = cp. methodref (index);
+                            mr = pool. methodref (index);
                         }
                         {
-                            String  class_name = cp. className (mr.class_index);
+                            String  class_name = pool. className (
+                                                                mr.class_index);
                             c = loader. load (class_name);
                             initialize (c);
                         }
@@ -580,10 +583,10 @@ class  Engine
                             String  name;
                             String  descriptor;
                             {
-                                CPNameAndType  nt = cp. nameandtype (
-                                                    mr.name_and_type_index);
-                                name = cp. utf8 (nt.name_index);
-                                descriptor = cp. utf8 (nt.descriptor_index);
+                                CPNameAndType  nt = pool. nameandtype (
+                                                        mr.name_and_type_index);
+                                name = pool. utf8 (nt.name_index);
+                                descriptor = pool. utf8 (nt.descriptor_index);
                             }
                             m = c. method_virtual (name, descriptor);
                             if (m == null)
@@ -609,10 +612,11 @@ class  Engine
                         {
                             short  index = code. nextShort (counter);
                             counter += 2;
-                            mr = cp. methodref (index);
+                            mr = pool. methodref (index);
                         }
                         {
-                            String  class_name = cp. className (mr.class_index);
+                            String  class_name = pool. className (
+                                                                mr.class_index);
                             c = loader. load (class_name);
                             initialize (c);
                         }
@@ -620,10 +624,10 @@ class  Engine
                             String  name;
                             String  descriptor;
                             {
-                                CPNameAndType  nt = cp. nameandtype (
-                                                    mr.name_and_type_index);
-                                name = cp. utf8 (nt.name_index);
-                                descriptor = cp. utf8 (nt.descriptor_index);
+                                CPNameAndType  nt = pool. nameandtype (
+                                                        mr.name_and_type_index);
+                                name = pool. utf8 (nt.name_index);
+                                descriptor = pool. utf8 (nt.descriptor_index);
                             }
                             m = c. method (name, descriptor);
                             if (m == null)
@@ -648,10 +652,11 @@ class  Engine
                         {
                             short  index = code. nextShort (counter);
                             counter += 2;
-                            mr = cp. methodref (index);
+                            mr = pool. methodref (index);
                         }
                         {
-                            String  class_name = cp. className (mr.class_index);
+                            String  class_name = pool. className (
+                                                                mr.class_index);
                             c = loader. load (class_name);
                             initialize (c);
                         }
@@ -659,10 +664,10 @@ class  Engine
                             String  name;
                             String  descriptor;
                             {
-                                CPNameAndType  nt = cp. nameandtype (
-                                                    mr.name_and_type_index);
-                                name = cp. utf8 (nt.name_index);
-                                descriptor = cp. utf8 (nt.descriptor_index);
+                                CPNameAndType  nt = pool. nameandtype (
+                                                        mr.name_and_type_index);
+                                name = pool. utf8 (nt.name_index);
+                                descriptor = pool. utf8 (nt.descriptor_index);
                             }
                             m = c. method (name, descriptor);
                             if (m == null)
@@ -686,7 +691,7 @@ class  Engine
                         {
                             short  index = code. nextShort (counter);
                             counter += 2;
-                            mr = cp. interfacemethodref (index);
+                            mr = pool. interfacemethodref (index);
                         }
                         {
                             @SuppressWarnings("unused")
@@ -697,10 +702,10 @@ class  Engine
                             String  name;
                             String  descriptor;
                             {
-                                CPNameAndType  nt = cp. nameandtype (
-                                                    mr.name_and_type_index);
-                                name = cp. utf8 (nt.name_index);
-                                descriptor = cp. utf8 (nt.descriptor_index);
+                                CPNameAndType  nt = pool. nameandtype (
+                                                        mr.name_and_type_index);
+                                name = pool. utf8 (nt.name_index);
+                                descriptor = pool. utf8 (nt.descriptor_index);
                             }
                             JJClass  c = o.c;
                             m = c. method_virtual (name, descriptor);
@@ -723,7 +728,7 @@ class  Engine
                     {
                         short  index = code. nextShort (counter);
                         counter += 2;
-                        String  class_name = cp. className (index);
+                        String  class_name = pool. className (index);
                         c = loader. load (class_name);
                         initialize (c);
                     }
