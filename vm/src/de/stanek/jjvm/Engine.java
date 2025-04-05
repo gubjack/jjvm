@@ -140,258 +140,258 @@ class  Engine
                 }
                 case Commands.iconst_m1:
                 {
-                    frame. pushi (-1);
                     ++counter;
+                    frame. pushi (-1);
                     break;
                 }
                 case Commands.iconst_0:
                 {
-                    frame. pushi (0);
                     ++counter;
+                    frame. pushi (0);
                     break;
                 }
                 case Commands.iconst_1:
                 {
-                    frame. pushi (1);
                     ++counter;
+                    frame. pushi (1);
                     break;
                 }
                 case Commands.iconst_2:
                 {
-                    frame. pushi (2);
                     ++counter;
+                    frame. pushi (2);
                     break;
                 }
                 case Commands.iconst_3:
                 {
-                    frame. pushi (3);
                     ++counter;
+                    frame. pushi (3);
                     break;
                 }
                 case Commands.iconst_4:
                 {
-                    frame. pushi (4);
                     ++counter;
+                    frame. pushi (4);
                     break;
                 }
                 case Commands.iconst_5:
                 {
-                    frame. pushi (5);
                     ++counter;
+                    frame. pushi (5);
                     break;
                 }
                 case Commands.bipush:
                 {
                     ++counter;
                     byte  value = code. peek (counter);
-                    frame. pushi (value);
                     ++counter;
+                    frame. pushi (value);
                     break;
                 }
                 case Commands.sipush:
                 {
-                    short  value = code. nextShort (counter);
+                    ++counter;
+                    short  value = code. getShort (counter);
                     counter += 2;
                     frame. pushi (value);
-                    ++counter;
                     break;
                 }
                 case Commands.ldc:
                 {
                     ++counter;
                     byte  index = code. peek (counter);
+                    ++counter;
                     int  value = pool. integer (index);
                     frame. pushi (value);
-                    ++counter;
                     break;
                 }
                 case Commands.iload:
                 {
                     ++counter;
                     byte  index = code. peek (counter);
+                    ++counter;
                     int  value = frame. geti (index);
                     frame. pushi (value);
-                    ++counter;
                     break;
                 }
                 case Commands.iload_0:
                 {
+                    ++counter;
                     int  value = frame. geti (0);
                     frame. pushi (value);
-                    ++counter;
                     break;
                 }
                 case Commands.iload_1:
                 {
+                    ++counter;
                     int  value = frame. geti (1);
                     frame. pushi (value);
-                    ++counter;
                     break;
                 }
                 case Commands.iload_2:
                 {
+                    ++counter;
                     int  value = frame. geti (2);
                     frame. pushi (value);
-                    ++counter;
                     break;
                 }
                 case Commands.iload_3:
                 {
+                    ++counter;
                     int  value = frame. geti (3);
                     frame. pushi (value);
-                    ++counter;
                     break;
                 }
                 case Commands.aload_0:
                 {
+                    ++counter;
                     JJInstance  o = frame. geto(0);
                     frame. pusho (o);
-                    ++counter;
                     break;
                 }
                 case Commands.istore:
                 {
                     ++counter;
                     byte  index = code. peek (counter);
+                    ++counter;
                     int  value = frame. popi ();
                     frame. seti (index, value);
-                    ++counter;
                     break;
                 }
                 case Commands.istore_0:
                 {
+                    ++counter;
                     int  value = frame. popi ();
                     frame. seti (0, value);
-                    ++counter;
                     break;
                 }
                 case Commands.istore_1:
                 {
+                    ++counter;
                     int  value = frame. popi ();
                     frame. seti (1, value);
-                    ++counter;
                     break;
                 }
                 case Commands.istore_2:
                 {
+                    ++counter;
                     int  value = frame. popi ();
                     frame. seti (2, value);
-                    ++counter;
                     break;
                 }
                 case Commands.istore_3:
                 {
+                    ++counter;
                     int  value = frame. popi ();
                     frame. seti (3, value);
-                    ++counter;
                     break;
                 }
                 case Commands.astore_0:
                 {
+                    ++counter;
                     JJInstance  o = frame. popo (thread);
                     frame. seto (0, o, thread);
-                    ++counter;
                     break;
                 }
                 case Commands.pop:
                 {
-                    frame. pop (thread);
                     ++counter;
+                    frame. pop (thread);
                     break;
                 }
                 case Commands.dup:
                 {
-                    frame. dup ();
                     ++counter;
+                    frame. dup ();
                     break;
                 }
                 case Commands.iadd:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 + value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.isub:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 - value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.imul:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 * value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.ineg:
                 {
+                    ++counter;
                     int  value = frame. popi ();
                     int  result = -value;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.ishl:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 << value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.ishr:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 >> value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.iushr:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 >>> value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.iand:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 & value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.ior:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 | value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.ixor:
                 {
+                    ++counter;
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     int  result = value1 ^ value2;
                     frame. pushi (result);
-                    ++counter;
                     break;
                 }
                 case Commands.iinc:
@@ -400,142 +400,168 @@ class  Engine
                     byte  index = code. peek (counter);
                     ++counter;
                     byte  const_ = code. peek (counter);
+                    ++counter;
                     int  value = frame. geti (index);
                     value += const_;
                     frame. seti (index, value);
-                    ++counter;
                     break;
                 }
                 case Commands.ifeq:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value = frame. popi ();
                     if (value == 0)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.ifne:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value = frame. popi ();
                     if (value != 0)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.iflt:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value = frame. popi ();
                     if (value < 0)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.ifge:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value = frame. popi ();
                     if (value >= 0)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.ifgt:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value = frame. popi ();
                     if (value > 0)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.ifle:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value = frame. popi ();
                     if (value <= 0)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.if_icmpeq:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     if (value1 == value2)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.if_icmpne:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     if (value1 != value2)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.if_icmplt:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     if (value1 < value2)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.if_icmpge:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     if (value1 >= value2)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.if_icmpgt:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     if (value1 > value2)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.if_icmple:
                 {
+                    int  start = counter;
+                    ++counter;
+                    int  offset = code. getShort (counter);
                     int  value2 = frame. popi ();
                     int  value1 = frame. popi ();
                     if (value1 <= value2)
-                        counter = code. branch (counter);
+                        counter = start + offset;
                     else
-                        counter += 2;
-                    ++counter;
+                        counter = start + 3;
                     break;
                 }
                 case Commands.goto_:
                 {
-                    counter = code. branch (counter);
+                    int  start = counter;
                     ++counter;
+                    int  offset = code. getShort (counter);
+                    counter = start + offset;
                     break;
                 }
                 case Commands.ireturn:
@@ -548,12 +574,13 @@ class  Engine
                 }
                 case Commands.getstatic:
                 {
+                    ++counter;
                     JJClass  c;
                     JJField  f;
                     {
                         CPFieldRef  fr;
                         {
-                            short  index = code. nextShort (counter);
+                            short  index = code. getShort (counter);
                             counter += 2;
                             fr = pool. fieldref (index);
                         }
@@ -576,17 +603,17 @@ class  Engine
                         }
                     }
                     frame. pushi (f.value);
-                    ++counter;
                     break;
                 }
                 case Commands.putstatic:
                 {
+                    ++counter;
                     JJClass  c;
                     JJField  f;
                     {
                         CPFieldRef  fr;
                         {
-                            short  index = code. nextShort (counter);
+                            short  index = code. getShort (counter);
                             counter += 2;
                             fr = pool. fieldref (index);
                         }
@@ -609,18 +636,18 @@ class  Engine
                         }
                     }
                     f. value = frame. popi ();
-                    ++counter;
                     break;
                 }
                 case Commands.invokevirtual:
                 {
+                    ++counter;
                     JJInstance  o = frame. popo (thread);
                     JJClass  c;
                     JJMethod  m;
                     {
                         CPMethodRef  mr;
                         {
-                            short  index = code. nextShort (counter);
+                            short  index = code. getShort (counter);
                             counter += 2;
                             mr = pool. methodref (index);
                         }
@@ -651,18 +678,19 @@ class  Engine
                                 "invokevirtual_native not implemented");
                     else
                         invoke (c, o, m, frame);
-                    ++counter;
+
                     break;
                 }
                 case Commands.invokespecial:
                 {
+                    ++counter;
                     JJInstance  o = frame. popo (thread);
                     JJClass  c;
                     JJMethod  m;
                     {
                         CPMethodRef  mr;
                         {
-                            short  index = code. nextShort (counter);
+                            short  index = code. getShort (counter);
                             counter += 2;
                             mr = pool. methodref (index);
                         }
@@ -693,17 +721,18 @@ class  Engine
                                 "invokespecial_native not implemented");
                     else
                         invoke (c, o, m, frame);
-                    ++counter;
+
                     break;
                 }
                 case Commands.invokestatic:
                 {
+                    ++counter;
                     JJClass  c;
                     JJMethod  m;
                     {
                         CPMethodRef  mr;
                         {
-                            short  index = code. nextShort (counter);
+                            short  index = code. getShort (counter);
                             counter += 2;
                             mr = pool. methodref (index);
                         }
@@ -733,23 +762,24 @@ class  Engine
                         invoke_native (c, m, frame);
                     else
                         invoke (c, m, frame);
-                    ++counter;
+
                     break;
                 }
                 case Commands.invokeinterface:
                 {
+                    ++counter;
                     JJInstance  o = frame. popo (thread);
                     JJMethod  m;
                     {
                         CPInterfaceMethodRef  mr;
                         {
-                            short  index = code. nextShort (counter);
+                            short  index = code. getShort (counter);
                             counter += 2;
                             mr = pool. interfacemethodref (index);
                         }
                         {
                             @SuppressWarnings("unused")
-                            short  count = code. nextShort (counter);
+                            short  count = code. getShort (counter);
                             counter += 2;
                         }
                         {
@@ -774,14 +804,15 @@ class  Engine
                                 "invokeinterface_native not implemented");
                     else
                         invoke (o.c, o, m, frame);
-                    ++counter;
+
                     break;
                 }
                 case Commands.new_:
                 {
+                    ++counter;
                     JJClass  c;
                     {
-                        short  index = code. nextShort (counter);
+                        short  index = code. getShort (counter);
                         counter += 2;
                         String  class_name = pool. className (index);
                         c = loader. load (class_name);
@@ -789,7 +820,6 @@ class  Engine
                     }
                     JJInstance  instance = heap. createJJInstance (c, thread);
                     frame. pusho (instance, thread);
-                    ++counter;
                     break;
                 }
                 default:

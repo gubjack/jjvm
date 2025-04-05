@@ -14,18 +14,12 @@ public class  JJCode
     {
         return code [counter];
     }
-    public short  nextShort (int counter)
+    public short  getShort (int counter)
     {
-        ++counter;
         byte  byte1 = code [counter];
         ++counter;
         byte  byte2 = code [counter];
         return (short) ((byte1 << 8) | (0xFF & byte2));
-    }
-    public int  branch (int counter)
-    {
-        short  offset = nextShort (counter);
-        return counter + offset - 1;
     }
 
 }

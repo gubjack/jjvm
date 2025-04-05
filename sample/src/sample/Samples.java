@@ -13,7 +13,7 @@ class  Samples
 
     public int  reckon ()
     {
-        return 55;
+        return 666;
     }
 
     public static int  run ()
@@ -72,13 +72,13 @@ class  Samples
         // ..., istore_0, iload_0, ireturn
         int  i = 0;  return i;
         // ..., istore_1, iload_1, ireturn
-//        int  j = 0, i = 0;  return i;
+//        int  j = 0, i = 1;  return i;
         // ..., istore_2, iload_2, ireturn
-//        int  k = 0, j = 0, i = 0;  return i;
+//        int  k = 0, j = 0, i = 2;  return i;
         // ..., istore_3, iload_3, ireturn
-//        int  l = 0, k = 0, j = 0, i = 0;  return i;
+//        int  l = 0, k = 0, j = 0, i = 3;  return i;
         // ..., istore_4, iload_4, ireturn
-//        int  m = 0, l = 0, k = 0, j = 0, i = 0;  return i;
+//        int  m = 0, l = 0, k = 0, j = 0, i = 4;  return i;
     }
 
     private static int  maths ()
@@ -121,6 +121,7 @@ class  Samples
     {
         // ..., ifeq, ...
         int  i = 0;  if (i != 0)  return 0;  return 1;
+//        int  i = 1;  if (i != 0)  return 0;  return 1;
         // ..., ifne, ...
 //        int  i = 0;  if (i == 0)  return 0;  return 1;
         // ..., iflt, ...
@@ -133,6 +134,7 @@ class  Samples
 //        int  i = 0;  if (i > 0)  return 0;  return 1;
         // ..., if_icmpeq, ...
 //        int  i = 0;  if (i != 1)  return 0;  return 1;
+//        int  i = 1;  if (i != 1)  return 0;  return 1;
         // ..., if_icmpne, ...
 //        int  i = 0;  if (i == 1)  return 0;  return 1;
         // ..., if_icmplt, ...
@@ -144,7 +146,7 @@ class  Samples
         // ..., if_icmple, ...
 //        int  i = 0;  if (i > 1)  return 0;  return 1;
         // ..., goto, ...
-//        for (int i = 0;  i < 2;  ++i) {}  return 0;
+//        for (int i = 0;  i < 2;  ++i) {}  return 2;
     }
 
     private static int  fields ()
@@ -180,7 +182,7 @@ class  Samples
     private static int  instances ()
     {
         // new, dup, invokespecial, astore_0, ..., nop, return, ..., aload_0
-//        Data  d = new Data ();  return 0;
+//        Data  d = new Data ();  return 22;
         // new, dup, invokespecial, invokevirtual, pop, iconst_0, ireturn
         new Samples (). reckon ();  return 33;
     }
