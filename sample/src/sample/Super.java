@@ -6,7 +6,7 @@ public class  Super
     implements FaceSuper
 {
 
-    public static int  super_field = 42;
+    public static int  super_field = 43;
 
     public int  super_reckon ()
     {

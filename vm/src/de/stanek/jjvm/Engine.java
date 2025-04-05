@@ -122,7 +122,7 @@ class  Engine
             diag. out ("execute " + jjClass + " " + frame);
         ConstantPool  pool = jjClass. cp;
 
-        for (int counter = 0;  ;  ++counter)
+        for (int counter = 0;  ;  )
         {
             byte  cmd = code. peek (counter);
             if (diag != null)
@@ -135,41 +135,49 @@ class  Engine
             {
                 case Commands.nop:
                 {
+                    ++counter;
                     break;
                 }
                 case Commands.iconst_m1:
                 {
                     frame. pushi (-1);
+                    ++counter;
                     break;
                 }
                 case Commands.iconst_0:
                 {
                     frame. pushi (0);
+                    ++counter;
                     break;
                 }
                 case Commands.iconst_1:
                 {
                     frame. pushi (1);
+                    ++counter;
                     break;
                 }
                 case Commands.iconst_2:
                 {
                     frame. pushi (2);
+                    ++counter;
                     break;
                 }
                 case Commands.iconst_3:
                 {
                     frame. pushi (3);
+                    ++counter;
                     break;
                 }
                 case Commands.iconst_4:
                 {
                     frame. pushi (4);
+                    ++counter;
                     break;
                 }
                 case Commands.iconst_5:
                 {
                     frame. pushi (5);
+                    ++counter;
                     break;
                 }
                 case Commands.bipush:
@@ -177,6 +185,7 @@ class  Engine
                     ++counter;
                     byte  value = code. peek (counter);
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.sipush:
@@ -184,6 +193,7 @@ class  Engine
                     short  value = code. nextShort (counter);
                     counter += 2;
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.ldc:
@@ -192,6 +202,7 @@ class  Engine
                     byte  index = code. peek (counter);
                     int  value = pool. integer (index);
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.iload:
@@ -200,36 +211,42 @@ class  Engine
                     byte  index = code. peek (counter);
                     int  value = frame. geti (index);
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.iload_0:
                 {
                     int  value = frame. geti (0);
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.iload_1:
                 {
                     int  value = frame. geti (1);
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.iload_2:
                 {
                     int  value = frame. geti (2);
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.iload_3:
                 {
                     int  value = frame. geti (3);
                     frame. pushi (value);
+                    ++counter;
                     break;
                 }
                 case Commands.aload_0:
                 {
                     JJInstance  o = frame. geto(0);
                     frame. pusho (o);
+                    ++counter;
                     break;
                 }
                 case Commands.istore:
@@ -238,46 +255,54 @@ class  Engine
                     byte  index = code. peek (counter);
                     int  value = frame. popi ();
                     frame. seti (index, value);
+                    ++counter;
                     break;
                 }
                 case Commands.istore_0:
                 {
                     int  value = frame. popi ();
                     frame. seti (0, value);
+                    ++counter;
                     break;
                 }
                 case Commands.istore_1:
                 {
                     int  value = frame. popi ();
                     frame. seti (1, value);
+                    ++counter;
                     break;
                 }
                 case Commands.istore_2:
                 {
                     int  value = frame. popi ();
                     frame. seti (2, value);
+                    ++counter;
                     break;
                 }
                 case Commands.istore_3:
                 {
                     int  value = frame. popi ();
                     frame. seti (3, value);
+                    ++counter;
                     break;
                 }
                 case Commands.astore_0:
                 {
                     JJInstance  o = frame. popo (thread);
                     frame. seto (0, o, thread);
+                    ++counter;
                     break;
                 }
                 case Commands.pop:
                 {
                     frame. pop (thread);
+                    ++counter;
                     break;
                 }
                 case Commands.dup:
                 {
                     frame. dup ();
+                    ++counter;
                     break;
                 }
                 case Commands.iadd:
@@ -286,6 +311,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 + value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.isub:
@@ -294,6 +320,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 - value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.imul:
@@ -302,6 +329,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 * value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.ineg:
@@ -309,6 +337,7 @@ class  Engine
                     int  value = frame. popi ();
                     int  result = -value;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.ishl:
@@ -317,6 +346,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 << value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.ishr:
@@ -325,6 +355,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 >> value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.iushr:
@@ -333,6 +364,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 >>> value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.iand:
@@ -341,6 +373,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 & value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.ior:
@@ -349,6 +382,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 | value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.ixor:
@@ -357,6 +391,7 @@ class  Engine
                     int  value1 = frame. popi ();
                     int  result = value1 ^ value2;
                     frame. pushi (result);
+                    ++counter;
                     break;
                 }
                 case Commands.iinc:
@@ -368,6 +403,7 @@ class  Engine
                     int  value = frame. geti (index);
                     value += const_;
                     frame. seti (index, value);
+                    ++counter;
                     break;
                 }
                 case Commands.ifeq:
@@ -377,6 +413,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.ifne:
@@ -386,6 +423,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.iflt:
@@ -395,6 +433,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.ifge:
@@ -404,6 +443,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.ifgt:
@@ -413,6 +453,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.ifle:
@@ -422,6 +463,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.if_icmpeq:
@@ -432,6 +474,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.if_icmpne:
@@ -442,6 +485,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.if_icmplt:
@@ -452,6 +496,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.if_icmpge:
@@ -462,6 +507,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.if_icmpgt:
@@ -472,6 +518,7 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.if_icmple:
@@ -482,11 +529,13 @@ class  Engine
                         counter = code. branch (counter);
                     else
                         counter += 2;
+                    ++counter;
                     break;
                 }
                 case Commands.goto_:
                 {
                     counter = code. branch (counter);
+                    ++counter;
                     break;
                 }
                 case Commands.ireturn:
@@ -527,6 +576,7 @@ class  Engine
                         }
                     }
                     frame. pushi (f.value);
+                    ++counter;
                     break;
                 }
                 case Commands.putstatic:
@@ -559,6 +609,7 @@ class  Engine
                         }
                     }
                     f. value = frame. popi ();
+                    ++counter;
                     break;
                 }
                 case Commands.invokevirtual:
@@ -600,6 +651,7 @@ class  Engine
                                 "invokevirtual_native not implemented");
                     else
                         invoke (c, o, m, frame);
+                    ++counter;
                     break;
                 }
                 case Commands.invokespecial:
@@ -641,6 +693,7 @@ class  Engine
                                 "invokespecial_native not implemented");
                     else
                         invoke (c, o, m, frame);
+                    ++counter;
                     break;
                 }
                 case Commands.invokestatic:
@@ -680,6 +733,7 @@ class  Engine
                         invoke_native (c, m, frame);
                     else
                         invoke (c, m, frame);
+                    ++counter;
                     break;
                 }
                 case Commands.invokeinterface:
@@ -720,6 +774,7 @@ class  Engine
                                 "invokeinterface_native not implemented");
                     else
                         invoke (o.c, o, m, frame);
+                    ++counter;
                     break;
                 }
                 case Commands.new_:
@@ -734,6 +789,7 @@ class  Engine
                     }
                     JJInstance  instance = heap. createJJInstance (c, thread);
                     frame. pusho (instance, thread);
+                    ++counter;
                     break;
                 }
                 default:
