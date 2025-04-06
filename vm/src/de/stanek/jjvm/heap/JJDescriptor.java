@@ -33,12 +33,7 @@ public class  JJDescriptor
     }
     private int  results ()
     {
-        return results (string);
-    }
-
-    public static int  results (String descriptor)
-    {
-        return  descriptor. charAt (descriptor. length () - 1) == 'I'
+        return  string. charAt (string. length () - 1) == 'I'
                 ?  1  :  0;
     }
 

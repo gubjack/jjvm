@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import de.stanek.jjvm.heap.Heap;
 import de.stanek.jjvm.heap.JJClass;
-import de.stanek.jjvm.heap.JJDescriptor;
 import de.stanek.jjvm.heap.JJMethod;
 
 class  JVM
@@ -35,7 +34,7 @@ class  JVM
         if (diag != null)
             diag. out ("executeMain " + clazz);
 
-        // main method is at the moment 'public static int main()'
+        // main method is at the moment '[public] static void main()'
         String  name = "main";
         String  descriptor = "()V";
 
@@ -45,10 +44,6 @@ class  JVM
         JJMethod  m = c. method (name, descriptor);
         if (m == null)
             throw new JJvmException ("Missing method " + name + descriptor);
-        int  results = JJDescriptor. results (descriptor);
-        if (results != 0)
-            throw new JJvmException (
-                            "Main method is not expected to return a result");
 
         engine. run (c, m);
     }

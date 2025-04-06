@@ -108,8 +108,20 @@ class  Engine
     {
         if (diag != null)
             diag. out ("run " + c + "#" + m);
-        JJAttributeCode  ac = m. attributeCode ();
-        try (JJFrame  frame = heap. createJJFrame (ac.max_locals, ac.max_stack))
+
+        // Check the descriptor of the method to be invoked
+        if (m.params != 0)
+            throw new JJvmException (
+                            "Main method is not expected to obtain parameters");
+        if (m.results != 0)
+            throw new JJvmException (
+                            "Main method is not expected to return a result");
+
+        // Invoke the method
+        try (JJFrame  frame = heap. createJJFrame (0, 0))
+            // Corresponding to the method to be invoked
+            // the invoking frame does not need local variables,
+            // is without parameters and is not expecting a result
         {
             invoke (c, m, frame);
         }
